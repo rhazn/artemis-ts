@@ -3,7 +3,7 @@ import {Bag} from "./../utils/Bag";
 import {Aspect} from "./Aspect";
 import {getClassName} from "./../prolog";
 interface IdentityHashMap {
-    [key:string]:ComponentType;
+    [key: string]: ComponentType;
 }
 
 export class ComponentTypeFactory {
@@ -11,13 +11,13 @@ export class ComponentTypeFactory {
      * Contains all generated component types, newly generated component types
      * will be stored here.
      */
-    private componentTypes_:IdentityHashMap;
+    private componentTypes_: IdentityHashMap;
 
     /** Amount of generated component types. */
-    private componentTypeCount_:number = 0;
+    private componentTypeCount_ = 0;
 
     /** Index of this component type in componentTypes. */
-    public types:Bag<ComponentType>;
+    public types: Bag<ComponentType>;
 
     constructor() {
         this.componentTypes_ = {};
@@ -37,16 +37,16 @@ export class ComponentTypeFactory {
      *
      * @return the component's {@link ComponentType}
      */
-    public getTypeFor(c):ComponentType {
+    public getTypeFor(c): ComponentType {
         // changed logic
-        if ('number' === typeof c) {
+        if ("number" === typeof c) {
             return this.types.get(c);
         }
 
-        var type:ComponentType = this.componentTypes_[getClassName(c)];
+        let type: ComponentType = this.componentTypes_[getClassName(c)];
 
         if (type == null) {
-            var index:number = this.componentTypeCount_++;
+            const index: number = this.componentTypeCount_++;
             type = new ComponentType(c, index);
             this.componentTypes_[getClassName(c)] = type;
             this.types.set(index, type);
@@ -63,12 +63,11 @@ export class ComponentTypeFactory {
      *
      * @return the component type's index
      */
-    public getIndexFor(c):number {
+    public getIndexFor(c): number {
         return this.getTypeFor(c).getIndex();
     }
 
-    public getTaxonomy(index:number):Taxonomy {
+    public getTaxonomy(index: number): Taxonomy {
         return this.types.get(index).getTaxonomy();
     }
-
 }

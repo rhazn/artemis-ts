@@ -11,22 +11,17 @@ import {Entity} from "./../core/Entity";
  *
  */
 export class VoidEntitySystem extends EntitySystem {
-
     constructor() {
         super(Aspect.getEmpty());
     }
 
-
-    protected processEntities(entities:ImmutableBag<Entity>) {
+    protected processEntities(entities: ImmutableBag<Entity>) {
         this.processSystem();
     }
 
-    protected processSystem() {
-    }
+    protected processSystem() {}
 
-
-    protected checkProcessing():boolean {
+    protected checkProcessing(): boolean {
         return true;
     }
-
 }

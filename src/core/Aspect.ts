@@ -25,12 +25,11 @@ import {Class} from "./../prolog";
  *
  */
 export class Aspect {
-
-    public static typeFactory:ComponentTypeFactory;
-    private allSet_:BitSet;
-    private exclusionSet_:BitSet;
-    private oneSet_:BitSet;
-    private world_:World;
+    public static typeFactory: ComponentTypeFactory;
+    private allSet_: BitSet;
+    private exclusionSet_: BitSet;
+    private oneSet_: BitSet;
+    private world_: World;
 
     /**
      * @constructor
@@ -45,19 +44,19 @@ export class Aspect {
      *
      * @param {artemis.World} world
      */
-    public setWorld(world:World) {
+    public setWorld(world: World) {
         this.world_ = world;
     }
 
-    public getAllSet():BitSet {
+    public getAllSet(): BitSet {
         return this.allSet_;
     }
 
-    public getExclusionSet():BitSet {
+    public getExclusionSet(): BitSet {
         return this.exclusionSet_;
     }
 
-    public getOneSet():BitSet {
+    public getOneSet(): BitSet {
         return this.oneSet_;
     }
 
@@ -71,10 +70,10 @@ export class Aspect {
      * @param {Array<Class>} types a required component type
      * @return {artemis.Aspect} an aspect that can be matched against entities
      */
-    all(type:Class, ...types:Class[]):Aspect {
+    all(type: Class, ...types: Class[]): Aspect {
         this.allSet_.set(this.getIndexFor(type));
 
-        var t;
+        let t;
         for (t in types) {
             this.allSet_.set(this.getIndexFor(types[t]));
         }
@@ -90,10 +89,10 @@ export class Aspect {
      * @param {Array<Class>} types component type to exclude
      * @return {artemis.Aspect} an aspect that can be matched against entities
      */
-    exclude(type:Class, ...types:Class[]):Aspect {
+    exclude(type: Class, ...types: Class[]): Aspect {
         this.exclusionSet_.set(this.getIndexFor(type));
 
-        var t;
+        let t;
         for (t in types) {
             this.exclusionSet_.set(this.getIndexFor(types[t]));
         }
@@ -106,10 +105,10 @@ export class Aspect {
      * @param {Array<Class>} types one of the types the entity must possess
      * @return {artemis.Aspect} an aspect that can be matched against entities
      */
-    one(type:Class, ...types:Class[]):Aspect {
+    one(type: Class, ...types: Class[]): Aspect {
         this.oneSet_.set(this.getIndexFor(type));
 
-        for (var t in types) {
+        for (const t in types) {
             this.oneSet_.set(this.getIndexFor(types[t]));
         }
         return this;
@@ -125,7 +124,7 @@ export class Aspect {
      * @deprecated
      * @see getAspectForAll
      */
-    static getAspectFor(type:Class, ...types:Class[]):Aspect {
+    static getAspectFor(type: Class, ...types: Class[]): Aspect {
         return Aspect.getAspectForAll(type, ...types);
     }
 
@@ -136,8 +135,8 @@ export class Aspect {
      * @param {Array<Class>} types a required component type
      * @return {artemis.Aspect} an aspect that can be matched against entities
      */
-    static getAspectForAll(type:Class, ...types:Class[]):Aspect {
-        var aspect:Aspect = new Aspect();
+    static getAspectForAll(type: Class, ...types: Class[]): Aspect {
+        const aspect: Aspect = new Aspect();
         aspect.all(type, ...types);
         return aspect;
     }
@@ -149,8 +148,8 @@ export class Aspect {
      * @param {Array<Class>} types one of the types the entity must possess
      * @return {artemis.Aspect} an aspect that can be matched against entities
      */
-    static getAspectForOne(type:Class, ...types:Class[]):Aspect {
-        var aspect:Aspect = new Aspect();
+    static getAspectForOne(type: Class, ...types: Class[]): Aspect {
+        const aspect: Aspect = new Aspect();
         aspect.one(type, ...types);
         return aspect;
     }
@@ -166,7 +165,7 @@ export class Aspect {
      *
      * @return {artemis.Aspect} an empty Aspect that will reject all entities.
      */
-    static getEmpty():Aspect {
+    static getEmpty(): Aspect {
         return new Aspect();
     }
 }

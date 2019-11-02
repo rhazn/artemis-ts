@@ -15,7 +15,7 @@ import {ComponentMapper} from "./ComponentMapper";
 import {EntityTemplate} from "./../annotations/EntityTemplate";
 
 interface IEntityTemplates {
-    [key:string]:IEntityTemplate;
+    [key: string]: IEntityTemplate;
 }
 
 /**
@@ -29,23 +29,23 @@ interface IEntityTemplates {
  *
  */
 export class World {
-    private em_:EntityManager;
-    private cm_:ComponentManager;
+    private em_: EntityManager;
+    private cm_: ComponentManager;
 
-    public delta:number;
-    private added_:Bag<Entity>;
-    private changed_:Bag<Entity>;
-    private deleted_:Bag<Entity>;
-    private enable_:Bag<Entity>;
-    private disable_:Bag<Entity>;
+    public delta: number;
+    private added_: Bag<Entity>;
+    private changed_: Bag<Entity>;
+    private deleted_: Bag<Entity>;
+    private enable_: Bag<Entity>;
+    private disable_: Bag<Entity>;
 
-    private managers_:Map<Function, Manager>;
-    private managersBag_:Bag<Manager>;
+    private managers_: Map<Function, Manager>;
+    private managersBag_: Bag<Manager>;
 
-    private systems_:Map<Function, EntitySystem>;
-    private systemsBag_:Bag<EntitySystem>;
+    private systems_: Map<Function, EntitySystem>;
+    private systemsBag_: Bag<EntitySystem>;
 
-    private entityTemplates:IEntityTemplates;
+    private entityTemplates: IEntityTemplates;
 
     constructor() {
         this.managers_ = new HashMap<Function, Manager>();
@@ -67,7 +67,6 @@ export class World {
         this.setManager(this.em_);
     }
 
-
     /**
      * Makes sure all managers systems are initialized in the order they were added.
      */
@@ -77,9 +76,9 @@ export class World {
         }
 
         this.entityTemplates = {};
-        for (var component in EntityTemplate['entityTemplates']) {
-            var Template = EntityTemplate['entityTemplates'][component];
-            this.setEntityTemplate(component, new Template);
+        for (const component in EntityTemplate["entityTemplates"]) {
+            const Template = EntityTemplate["entityTemplates"][component];
+            this.setEntityTemplate(component, new Template());
         }
 
         for (var i = 0; i < this.systemsBag_.size(); i++) {
@@ -87,9 +86,7 @@ export class World {
             ComponentMapperInitHelper.config(this.systemsBag_.get(i), this);
             this.systemsBag_.get(i).initialize();
         }
-
     }
-
 
     /**
      * Returns a manager that takes care of all the entities in the world.
@@ -97,7 +94,7 @@ export class World {
      *
      * @return entity manager.
      */
-    public getEntityManager():EntityManager {
+    public getEntityManager(): EntityManager {
         return this.em_;
     }
 
@@ -106,10 +103,9 @@ export class World {
      *
      * @return component manager.
      */
-    public getComponentManager():ComponentManager {
+    public getComponentManager(): ComponentManager {
         return this.cm_;
     }
-
 
     /**
      * Add a manager into this world. It can be retrieved later.
@@ -117,7 +113,7 @@ export class World {
      *
      * @param manager to be added
      */
-    public setManager(manager:Manager):Manager {
+    public setManager(manager: Manager): Manager {
         this.managers_.put(manager.constructor, manager);
         this.managersBag_.add(manager);
         manager.setWorld(this);
@@ -132,7 +128,7 @@ export class World {
      *            class type of the manager
      * @return the manager
      */
-    public getManager<T extends Manager>(managerType:Class):T {
+    public getManager<T extends Manager>(managerType: Class): T {
         return this.managers_.get(managerType);
     }
 
@@ -140,11 +136,10 @@ export class World {
      * Deletes the manager from this world.
      * @param manager to delete.
      */
-    public deleteManager(manager:Manager) {
+    public deleteManager(manager: Manager) {
         this.managers_.remove(manager);
         this.managersBag_.remove(manager);
     }
-
 
     /**
      * Time since last game loop.
@@ -160,17 +155,16 @@ export class World {
      *
      * @param delta time since last game loop.
      */
-    public setDelta(delta:number) {
+    public setDelta(delta: number) {
         this.delta = delta;
     }
-
 
     /**
      * Adds a entity to this world.
      *
      * @param e entity
      */
-    public addEntity(e:Entity) {
+    public addEntity(e: Entity) {
         this.added_.add(e);
     }
 
@@ -181,7 +175,7 @@ export class World {
      *
      * @param e entity
      */
-    public changedEntity(e:Entity) {
+    public changedEntity(e: Entity) {
         this.changed_.add(e);
     }
 
@@ -190,7 +184,7 @@ export class World {
      *
      * @param e entity
      */
-    public deleteEntity(e:Entity) {
+    public deleteEntity(e: Entity) {
         if (!this.deleted_.contains(e)) {
             this.deleted_.add(e);
         }
@@ -200,7 +194,7 @@ export class World {
      * (Re)enable the entity in the world, after it having being disabled.
      * Won't do anything unless it was already disabled.
      */
-    public enable(e:Entity) {
+    public enable(e: Entity) {
         this.enable_.add(e);
     }
 
@@ -208,10 +202,9 @@ export class World {
      * Disable the entity from being processed. Won't delete it, it will
      * continue to exist but won't get processed.
      */
-    public disable(e:Entity) {
+    public disable(e: Entity) {
         this.disable_.add(e);
     }
-
 
     /**
      * Create and return a new or reused entity instance.
@@ -220,7 +213,7 @@ export class World {
      * @param name optional name for debugging
      * @return entity
      */
-    public createEntity(name?:string):Entity {
+    public createEntity(name?: string): Entity {
         return this.em_.createEntityInstance(name);
     }
 
@@ -230,17 +223,16 @@ export class World {
      * @param entityId
      * @return entity
      */
-    public getEntity(entityId:number):Entity {
+    public getEntity(entityId: number): Entity {
         return this.em_.getEntity(entityId);
     }
-
 
     /**
      * Gives you all the systems in this world for possible iteration.
      *
      * @return all entity systems in world.
      */
-    public getSystems():ImmutableBag<EntitySystem> {
+    public getSystems(): ImmutableBag<EntitySystem> {
         return this.systemsBag_;
     }
 
@@ -263,7 +255,7 @@ export class World {
      */
     //	public <T extends EntitySystem> T setSystem(T system, boolean passive) {
 
-    public setSystem<T extends EntitySystem>(system:T, passive:boolean = false):T {
+    public setSystem<T extends EntitySystem>(system: T, passive = false): T {
         system.setWorld(this);
         system.setPassive(passive);
 
@@ -277,19 +269,19 @@ export class World {
      * Removed the specified system from the world.
      * @param system to be deleted from world.
      */
-    public deleteSystem(system:EntitySystem) {
+    public deleteSystem(system: EntitySystem) {
         this.systems_.remove(system.constructor);
         this.systemsBag_.remove(system);
     }
 
-    private notifySystems(performer:Performer, e:Entity) {
-        for (var i = 0, s = this.systemsBag_.size(); s > i; i++) {
+    private notifySystems(performer: Performer, e: Entity) {
+        for (let i = 0, s = this.systemsBag_.size(); s > i; i++) {
             performer.perform(this.systemsBag_.get(i), e);
         }
     }
 
-    private notifyManagers(performer:Performer, e:Entity) {
-        for (var a = 0, s = this.managersBag_.size(); s > a; a++) {
+    private notifyManagers(performer: Performer, e: Entity) {
+        for (let a = 0, s = this.managersBag_.size(); s > a; a++) {
             performer.perform(this.managersBag_.get(a), e);
         }
     }
@@ -300,7 +292,7 @@ export class World {
      * @param type type of system.
      * @return instance of the system in this world.
      */
-    public getSystem(type:Class):EntitySystem {
+    public getSystem(type: Class): EntitySystem {
         return this.systems_.get(type);
     }
 
@@ -309,10 +301,10 @@ export class World {
      * @param entities
      * @param performer
      */
-    private check(entities:Bag<Entity>, performer:Performer) {
+    private check(entities: Bag<Entity>, performer: Performer) {
         if (!entities.isEmpty()) {
-            for (var i = 0, s = entities.size(); s > i; i++) {
-                var e:Entity = entities.get(i);
+            for (let i = 0, s = entities.size(); s > i; i++) {
+                const e: Entity = entities.get(i);
                 this.notifyManagers(performer, e);
                 this.notifySystems(performer, e);
             }
@@ -320,57 +312,49 @@ export class World {
         }
     }
 
-
     /**
      * Process all non-passive systems.
      */
     public process() {
-
         this.check(this.added_, {
-
-            perform: function (observer:EntityObserver, e:Entity) {
+            perform: function(observer: EntityObserver, e: Entity) {
                 observer.added(e);
-            }
+            },
         });
 
         this.check(this.changed_, {
-
-            perform: function (observer:EntityObserver, e:Entity) {
+            perform: function(observer: EntityObserver, e: Entity) {
                 observer.changed(e);
-            }
+            },
         });
 
         this.check(this.disable_, {
-
-            perform: function (observer:EntityObserver, e:Entity) {
+            perform: function(observer: EntityObserver, e: Entity) {
                 observer.disabled(e);
-            }
+            },
         });
 
         this.check(this.enable_, {
-
-            perform: function (observer:EntityObserver, e:Entity) {
+            perform: function(observer: EntityObserver, e: Entity) {
                 observer.enabled(e);
-            }
+            },
         });
 
         this.check(this.deleted_, {
-
-            perform: function (observer:EntityObserver, e:Entity) {
+            perform: function(observer: EntityObserver, e: Entity) {
                 observer.deleted(e);
-            }
+            },
         });
 
         this.cm_.clean();
 
-        for (var i = 0; this.systemsBag_.size() > i; i++) {
-            var system:EntitySystem = this.systemsBag_.get(i);
+        for (let i = 0; this.systemsBag_.size() > i; i++) {
+            const system: EntitySystem = this.systemsBag_.get(i);
             if (!system.isPassive()) {
                 system.process();
             }
         }
     }
-
 
     /**
      * Retrieves a ComponentMapper instance for fast retrieval of components from entities.
@@ -378,10 +362,9 @@ export class World {
      * @param type of component to get mapper for.
      * @return mapper for specified component type.
      */
-    public getMapper<T extends Component>(type:Class):ComponentMapper<T> {
+    public getMapper<T extends Component>(type: Class): ComponentMapper<T> {
         return ComponentMapper.getFor<T>(type, this);
     }
-
 
     /**
      * Set an Entity Template
@@ -389,7 +372,7 @@ export class World {
      * @param entityTag
      * @param entityTemplate
      */
-    public setEntityTemplate(entityTag:string, entityTemplate:IEntityTemplate) {
+    public setEntityTemplate(entityTag: string, entityTemplate: IEntityTemplate) {
         this.entityTemplates[entityTag] = entityTemplate;
     }
 
@@ -401,35 +384,30 @@ export class World {
      * @returns {Entity}
      * EntityTemplate
      */
-    public createEntityFromTemplate(name:string, ...args:any[]):Entity {
+    public createEntityFromTemplate(name: string, ...args: any[]): Entity {
         return this.entityTemplates[name].buildEntity(this.createEntity(), this, ...args);
     }
-
 }
 
 /*
  * Only used internally to maintain clean code.
  */
 interface Performer {
-    perform(observer:EntityObserver, e:Entity);
+    perform(observer: EntityObserver, e: Entity);
 }
 
-
 class ComponentMapperInitHelper {
-
-    public static config(target:Object, world:World) {
+    public static config(target: Record<string, any>, world: World) {
         try {
-            var clazz:any = target.constructor;
+            const clazz: any = target.constructor;
 
-            for (var fieldIndex in clazz.declaredFields) {
-                var field = clazz.declaredFields[fieldIndex];
+            for (const fieldIndex in clazz.declaredFields) {
+                const field = clazz.declaredFields[fieldIndex];
                 if (!target.hasOwnProperty(field)) {
-
-                    var componentType = clazz.prototype[field];
+                    const componentType = clazz.prototype[field];
                     target[field] = world.getMapper(componentType);
                 }
             }
-
         } catch (e) {
             throw new Error("Error while setting component mappers");
         }

@@ -1,11 +1,9 @@
 export interface ImmutableBag<E> {
+    get(index: number): E;
 
-    get(index:number):E;
+    size(): number;
 
-    size():number;
+    isEmpty(): boolean;
 
-    isEmpty():boolean;
-
-    contains(e:E):boolean;
-
+    contains(e: E): boolean;
 }

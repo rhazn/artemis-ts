@@ -8,16 +8,15 @@ import {Aspect} from "./../core/Aspect";
  *
  */
 export class IntervalEntitySystem extends EntitySystem {
-    private acc_:number = 0;
-    private interval_:number = 0;
+    private acc_ = 0;
+    private interval_ = 0;
 
-    constructor(aspect:Aspect, interval:number) {
+    constructor(aspect: Aspect, interval: number) {
         super(aspect);
         this.interval_ = interval;
     }
 
-
-    protected checkProcessing():boolean {
+    protected checkProcessing(): boolean {
         //this.acc_ += this.world.getDelta();
         //if(this.acc_ >= this.interval_) {
 
@@ -27,5 +26,4 @@ export class IntervalEntitySystem extends EntitySystem {
         }
         return false;
     }
-
 }

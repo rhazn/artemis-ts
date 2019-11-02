@@ -1,9 +1,9 @@
 import {Manager} from "./../core/Manager";
 import {Bag} from "./../utils/Bag";
-import { Map } from "./../utils/Map";
-import { Entity } from "./../core/Entity";
-import { HashMap } from "./../utils/HashMap";
-import { ImmutableBag } from "./../utils/ImmutableBag";
+import {Map} from "./../utils/Map";
+import {Entity} from "./../core/Entity";
+import {HashMap} from "./../utils/HashMap";
+import {ImmutableBag} from "./../utils/ImmutableBag";
 /**
  * If you need to group your entities together, e.g. tanks going into "units" group or explosions into "effects",
  * then use this manager. You must retrieve it using world instance.
@@ -14,19 +14,16 @@ import { ImmutableBag } from "./../utils/ImmutableBag";
  *
  */
 export class GroupManager extends Manager {
-    private entitiesByGroup_:Map<String, Bag<Entity>>;
-    private groupsByEntity_:Map<Entity, Bag<String>>;
+    private entitiesByGroup_: Map<string, Bag<Entity>>;
+    private groupsByEntity_: Map<Entity, Bag<string>>;
 
     constructor() {
         super();
-        this.entitiesByGroup_ = new HashMap<String, Bag<Entity>>();
-        this.groupsByEntity_ = new HashMap<Entity, Bag<String>>();
+        this.entitiesByGroup_ = new HashMap<string, Bag<Entity>>();
+        this.groupsByEntity_ = new HashMap<Entity, Bag<string>>();
     }
 
-
-    public initialize() {
-    }
-
+    public initialize() {}
 
     /**
      * Set the group of the entity.
@@ -34,17 +31,17 @@ export class GroupManager extends Manager {
      * @param group group to add the entity into.
      * @param e entity to add into the group.
      */
-    public add(e:Entity, group:string) {
-        var entities:Bag<Entity> = this.entitiesByGroup_.get(group);
+    public add(e: Entity, group: string) {
+        let entities: Bag<Entity> = this.entitiesByGroup_.get(group);
         if (entities == null) {
             entities = new Bag<Entity>();
             this.entitiesByGroup_.put(group, entities);
         }
         entities.add(e);
 
-        var groups:Bag<String> = this.groupsByEntity_.get(e);
+        let groups: Bag<string> = this.groupsByEntity_.get(e);
         if (groups == null) {
-            groups = new Bag<String>();
+            groups = new Bag<string>();
             this.groupsByEntity_.put(e, groups);
         }
         groups.add(group);
@@ -55,23 +52,23 @@ export class GroupManager extends Manager {
      * @param e
      * @param group
      */
-    public remove(e:Entity, group:string) {
-        var entities:Bag<Entity> = this.entitiesByGroup_.get(group);
+    public remove(e: Entity, group: string) {
+        const entities: Bag<Entity> = this.entitiesByGroup_.get(group);
         if (entities != null) {
             entities.remove(e);
         }
 
-        var groups:Bag<String> = this.groupsByEntity_.get(e);
+        const groups: Bag<string> = this.groupsByEntity_.get(e);
         if (groups != null) {
             groups.remove(group);
         }
     }
 
-    public removeFromAllGroups(e:Entity) {
-        var groups:Bag<String> = this.groupsByEntity_.get(e);
+    public removeFromAllGroups(e: Entity) {
+        const groups: Bag<string> = this.groupsByEntity_.get(e);
         if (groups != null) {
-            for (var i = 0, s = groups.size(); s > i; i++) {
-                var entities:Bag<Entity> = this.entitiesByGroup_.get(groups.get(i));
+            for (let i = 0, s = groups.size(); s > i; i++) {
+                const entities: Bag<Entity> = this.entitiesByGroup_.get(groups.get(i));
                 if (entities != null) {
                     entities.remove(e);
                 }
@@ -85,8 +82,8 @@ export class GroupManager extends Manager {
      * @param group name of the group.
      * @return read-only bag of entities belonging to the group.
      */
-    public getEntities(group:string):ImmutableBag<Entity> {
-        var entities:Bag<Entity> = this.entitiesByGroup_.get(group);
+    public getEntities(group: string): ImmutableBag<Entity> {
+        let entities: Bag<Entity> = this.entitiesByGroup_.get(group);
         if (entities == null) {
             entities = new Bag<Entity>();
             this.entitiesByGroup_.put(group, entities);
@@ -98,7 +95,7 @@ export class GroupManager extends Manager {
      * @param e entity
      * @return the groups the entity belongs to, null if none.
      */
-    public getGroups(e:Entity):ImmutableBag<String> {
+    public getGroups(e: Entity): ImmutableBag<string> {
         return this.groupsByEntity_.get(e);
     }
 
@@ -107,7 +104,7 @@ export class GroupManager extends Manager {
      * @param e the entity to check.
      * @return true if it is in any group, false if none.
      */
-    public isInAnyGroup(e:Entity):boolean {
+    public isInAnyGroup(e: Entity): boolean {
         return this.getGroups(e) != null;
     }
 
@@ -117,11 +114,11 @@ export class GroupManager extends Manager {
      * @param e the entity to check for.
      * @return true if the entity is in the supplied group, false if not.
      */
-    public isInGroup(e:Entity, group:string):boolean {
+    public isInGroup(e: Entity, group: string): boolean {
         if (group != null) {
-            var groups:Bag<string> = this.groupsByEntity_.get(e);
-            for (var i = 0, s = groups.size(); s > i; i++) {
-                var g:string = groups.get(i);
+            const groups: Bag<string> = this.groupsByEntity_.get(e);
+            for (let i = 0, s = groups.size(); s > i; i++) {
+                const g: string = groups.get(i);
                 if (group === g) {
                     return true;
                 }
@@ -130,9 +127,7 @@ export class GroupManager extends Manager {
         return false;
     }
 
-
-    public deleted(e:Entity) {
+    public deleted(e: Entity) {
         this.removeFromAllGroups(e);
     }
-
 }

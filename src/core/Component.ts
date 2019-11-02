@@ -4,7 +4,5 @@
  * @author Arni Arent
  */
 export class Component {
-    public initialize(...args:any[]) {
-    }
-
+    public initialize(...args: any[]) {}
 }

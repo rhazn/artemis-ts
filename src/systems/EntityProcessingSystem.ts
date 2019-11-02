@@ -10,8 +10,7 @@ import {ImmutableBag} from "./../utils/ImmutableBag";
  *
  */
 export class EntityProcessingSystem extends EntitySystem {
-
-    constructor(aspect:Aspect) {
+    constructor(aspect: Aspect) {
         super(aspect);
     }
 
@@ -19,19 +18,15 @@ export class EntityProcessingSystem extends EntitySystem {
      * Process a entity this system is interested in.
      * @param e the entity to process.
      */
-    protected processEach(e:Entity) {
-    }
+    protected processEach(e: Entity) {}
 
-
-    protected processEntities(entities:ImmutableBag<Entity>) {
-        for (var i = 0, s = entities.size(); s > i; i++) {
+    protected processEntities(entities: ImmutableBag<Entity>) {
+        for (let i = 0, s = entities.size(); s > i; i++) {
             this.processEach(entities[i]);
         }
     }
 
-
-    protected checkProcessing():boolean {
+    protected checkProcessing(): boolean {
         return true;
     }
-
 }

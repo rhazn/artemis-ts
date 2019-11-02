@@ -28,20 +28,19 @@ import {Entity} from "./../core/Entity";
  *
  */
 export class DelayedEntityProcessingSystem extends EntitySystem {
-    private delay_:number;
-    private running_:boolean;
-    private acc_:number;
+    private delay_: number;
+    private running_: boolean;
+    private acc_: number;
 
-    constructor(aspect:Aspect) {
+    constructor(aspect: Aspect) {
         super(aspect);
     }
 
-
-    protected processEntities(entities:ImmutableBag<Entity>) {
-        for (var i = 0, s = entities.size(); s > i; i++) {
-            var entity:Entity = entities.get(i);
+    protected processEntities(entities: ImmutableBag<Entity>) {
+        for (let i = 0, s = entities.size(); s > i; i++) {
+            const entity: Entity = entities.get(i);
             this.processDelta(entity, this.acc_);
-            var remaining:number = this.getRemainingDelay(entity);
+            const remaining: number = this.getRemainingDelay(entity);
             if (remaining <= 0) {
                 this.processExpired(entity);
             } else {
@@ -51,9 +50,8 @@ export class DelayedEntityProcessingSystem extends EntitySystem {
         this.stop();
     }
 
-
-    public inserted(e:Entity) {
-        var delay:number = this.getRemainingDelay(e);
+    public inserted(e: Entity) {
+        const delay: number = this.getRemainingDelay(e);
         if (delay > 0) {
             this.offerDelay(delay);
         }
@@ -65,12 +63,11 @@ export class DelayedEntityProcessingSystem extends EntitySystem {
      * @param e entity
      * @return delay
      */
-    protected getRemainingDelay(e:Entity):number {
-        throw Error('Abstract Method');
+    protected getRemainingDelay(e: Entity): number {
+        throw Error("Abstract Method");
     }
 
-
-    protected checkProcessing():boolean {
+    protected checkProcessing(): boolean {
         if (this.running_) {
             //this.acc_ += this.world.getDelta();
 
@@ -82,7 +79,6 @@ export class DelayedEntityProcessingSystem extends EntitySystem {
         return false;
     }
 
-
     /**
      * Process a entity this system is interested in. Substract the accumulatedDelta
      * from the entities defined delay.
@@ -90,12 +86,9 @@ export class DelayedEntityProcessingSystem extends EntitySystem {
      * @param e the entity to process.
      * @param accumulatedDelta the delta time since this system was last executed.
      */
-    protected processDelta(e:Entity, accumulatedDelta:number) {
-    }
+    protected processDelta(e: Entity, accumulatedDelta: number) {}
 
-    protected processExpired(e:Entity) {
-    }
-
+    protected processExpired(e: Entity) {}
 
     /**
      * Start processing of entities after a certain amount of delta time.
@@ -104,7 +97,7 @@ export class DelayedEntityProcessingSystem extends EntitySystem {
      *
      * @param delta time delay until processing starts.
      */
-    public restart(delay:number) {
+    public restart(delay: number) {
         this.delay_ = delay;
         this.acc_ = 0;
         this.running_ = true;
@@ -124,19 +117,18 @@ export class DelayedEntityProcessingSystem extends EntitySystem {
      *
      * @param delay
      */
-    public offerDelay(delay:number) {
+    public offerDelay(delay: number) {
         if (!this.running_ || delay < this.getRemainingTimeUntilProcessing()) {
             this.restart(delay);
         }
     }
-
 
     /**
      * Get the initial delay that the system was ordered to process entities after.
      *
      * @return the originally set delay.
      */
-    public getInitialTimeDelay():number {
+    public getInitialTimeDelay(): number {
         return this.delay_;
     }
 
@@ -147,7 +139,7 @@ export class DelayedEntityProcessingSystem extends EntitySystem {
      *
      * @return time when system will run at.
      */
-    public getRemainingTimeUntilProcessing():number {
+    public getRemainingTimeUntilProcessing(): number {
         if (this.running_) {
             return this.delay_ - this.acc_;
         }
@@ -159,7 +151,7 @@ export class DelayedEntityProcessingSystem extends EntitySystem {
      *
      * @return true if it's counting down, false if it's not running.
      */
-    public isRunning():boolean {
+    public isRunning(): boolean {
         return this.running_;
     }
 
@@ -171,5 +163,4 @@ export class DelayedEntityProcessingSystem extends EntitySystem {
         this.running_ = false;
         this.acc_ = 0;
     }
-
 }

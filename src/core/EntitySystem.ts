@@ -17,29 +17,28 @@ import {BlackBoard} from "./../blackboard/BlackBoard";
  *
  */
 export class EntitySystem implements EntityObserver {
+    public static blackBoard: BlackBoard = new BlackBoard();
+    private systemIndex_: number;
 
-    public static blackBoard:BlackBoard = new BlackBoard();
-    private systemIndex_:number;
+    public world: World;
 
-    public world:World;
+    private actives_: Bag<Entity>;
 
-    private actives_:Bag<Entity>;
+    private aspect_: Aspect;
 
-    private aspect_:Aspect;
+    private allSet_: BitSet;
+    private exclusionSet_: BitSet;
+    private oneSet_: BitSet;
 
-    private allSet_:BitSet;
-    private exclusionSet_:BitSet;
-    private oneSet_:BitSet;
+    private passive_: boolean;
 
-    private passive_:boolean;
-
-    private dummy_:boolean;
+    private dummy_: boolean;
 
     /**
      * Creates an entity system that uses the specified aspect as a matcher against entities.
      * @param aspect to match against entities
      */
-    constructor(aspect:Aspect) {
+    constructor(aspect: Aspect) {
         this.actives_ = new Bag<Entity>();
         this.aspect_ = aspect;
         this.systemIndex_ = SystemIndexManager.getIndexFor(this.constructor);
@@ -52,8 +51,7 @@ export class EntitySystem implements EntityObserver {
     /**
      * Called before processing of entities begins.
      */
-    protected begin() {
-    }
+    protected begin() {}
 
     public process() {
         if (this.checkProcessing()) {
@@ -66,8 +64,7 @@ export class EntitySystem implements EntityObserver {
     /**
      * Called after the processing of entities ends.
      */
-    protected end() {
-    }
+    protected end() {}
 
     /**
      * Any implementing entity system must implement this method and the logic
@@ -75,54 +72,50 @@ export class EntitySystem implements EntityObserver {
      *
      * @param entities the entities this system contains.
      */
-    protected processEntities(entities:ImmutableBag<Entity>) {
-    }
+    protected processEntities(entities: ImmutableBag<Entity>) {}
 
     /**
      *
      * @return true if the system should be processed, false if not.
      */
-    protected checkProcessing():boolean {
+    protected checkProcessing(): boolean {
         return true;
     }
 
     /**
      * Override to implement code that gets executed when systems are initialized.
      */
-    public initialize() {
-    }
+    public initialize() {}
 
     /**
      * Called if the system has received a entxity it is interested in, e.g. created or a component was added to it.
      * @param e the entity that was added to this system.
      */
-    public inserted(e:Entity) {
-    };
+    public inserted(e: Entity) {}
 
     /**
      * Called if a entity was removed from this system, e.g. deleted or had one of it's components removed.
      * @param e the entity that was removed from this system.
      */
-    protected removed(e:Entity) {
-    };
+    protected removed(e: Entity) {}
 
     /**
      * Will check if the entity is of interest to this system.
      * @param e entity to check
      */
-    protected check(e:Entity) {
+    protected check(e: Entity) {
         if (this.dummy_) {
             return;
         }
 
-        var contains:boolean = e.getSystemBits().get(this.systemIndex_);
-        var interested:boolean = true; // possibly interested, let's try to prove it wrong.
+        const contains: boolean = e.getSystemBits().get(this.systemIndex_);
+        let interested = true; // possibly interested, let's try to prove it wrong.
 
-        var componentBits:BitSet = e.getComponentBits();
+        const componentBits: BitSet = e.getComponentBits();
 
         // Check if the entity possesses ALL of the components defined in the aspect.
         if (!this.allSet_.isEmpty()) {
-            for (var i = this.allSet_.nextSetBit(0); i >= 0; i = this.allSet_.nextSetBit(i + 1)) {
+            for (let i = this.allSet_.nextSetBit(0); i >= 0; i = this.allSet_.nextSetBit(i + 1)) {
                 if (!componentBits.get(i)) {
                     interested = false;
                     break;
@@ -147,60 +140,55 @@ export class EntitySystem implements EntityObserver {
         }
     }
 
-    private removeFromSystem(e:Entity) {
+    private removeFromSystem(e: Entity) {
         this.actives_.remove(e);
         e.getSystemBits().clear(this.systemIndex_);
         this.removed(e);
     }
 
-    private insertToSystem(e:Entity) {
+    private insertToSystem(e: Entity) {
         this.actives_.add(e);
         e.getSystemBits().set(this.systemIndex_);
         this.inserted(e);
     }
 
-
-    public added(e:Entity) {
+    public added(e: Entity) {
         this.check(e);
     }
 
-
-    public changed(e:Entity) {
+    public changed(e: Entity) {
         this.check(e);
     }
 
-
-    public deleted(e:Entity) {
+    public deleted(e: Entity) {
         if (e.getSystemBits().get(this.systemIndex_)) {
             this.removeFromSystem(e);
         }
     }
 
-
-    public disabled(e:Entity) {
+    public disabled(e: Entity) {
         if (e.getSystemBits().get(this.systemIndex_)) {
             this.removeFromSystem(e);
         }
     }
 
-    public enabled(e:Entity) {
+    public enabled(e: Entity) {
         this.check(e);
     }
 
-
-    public setWorld(world:World) {
+    public setWorld(world: World) {
         this.world = world;
     }
 
-    public isPassive():boolean {
+    public isPassive(): boolean {
         return this.passive_;
     }
 
-    public setPassive(passive:boolean) {
+    public setPassive(passive: boolean) {
         this.passive_ = passive;
     }
 
-    public getActive():ImmutableBag<Entity> {
+    public getActive(): ImmutableBag<Entity> {
         return this.actives_;
     }
 }
@@ -209,12 +197,11 @@ export class EntitySystem implements EntityObserver {
  * Only used internally in EntitySystem.
  */
 export class SystemIndexManager {
-    public static INDEX:number = 0;
-    private static indices:HashMap<Function, number> = new HashMap<Function, number>();
+    public static INDEX = 0;
+    private static indices: HashMap<Function, number> = new HashMap<Function, number>();
 
-    public static getIndexFor(es:Class):number {
-
-        var index:number = SystemIndexManager.indices.get(es);
+    public static getIndexFor(es: Class): number {
+        let index: number = SystemIndexManager.indices.get(es);
         if (index === undefined) {
             index = SystemIndexManager.INDEX++;
             SystemIndexManager.indices.put(es, index);

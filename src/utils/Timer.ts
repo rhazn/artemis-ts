@@ -1,18 +1,17 @@
 export class Timer {
+    private delay: number;
+    private repeat: boolean;
+    private acc: number;
+    private done: boolean;
+    private stopped: boolean;
 
-    private delay:number;
-    private repeat:boolean;
-    private acc:number;
-    private done:boolean;
-    private stopped:boolean;
-
-    constructor(delay:number, repeat:boolean = false) {
+    constructor(delay: number, repeat = false) {
         this.delay = delay;
         this.repeat = repeat;
         this.acc = 0;
     }
 
-    public update(delta:number) {
+    public update(delta: number) {
         if (!this.done && !this.stopped) {
             this.acc += delta;
 
@@ -36,11 +35,11 @@ export class Timer {
         this.acc = 0;
     }
 
-    public isDone():boolean {
+    public isDone(): boolean {
         return this.done;
     }
 
-    public isRunning():boolean {
+    public isRunning(): boolean {
         return !this.done && this.acc < this.delay && !this.stopped;
     }
 
@@ -48,24 +47,19 @@ export class Timer {
         this.stopped = true;
     }
 
-    public setDelay(delay:number) {
+    public setDelay(delay: number) {
         this.delay = delay;
     }
 
-    public execute = () => {
-    };
+    public execute = () => {};
 
-    public getPercentageRemaining():number {
-        if (this.done)
-            return 100;
-        else if (this.stopped)
-            return 0;
-        else
-            return 1 - (this.delay - this.acc) / this.delay;
+    public getPercentageRemaining(): number {
+        if (this.done) return 100;
+        else if (this.stopped) return 0;
+        else return 1 - (this.delay - this.acc) / this.delay;
     }
 
-    public getDelay():number {
+    public getDelay(): number {
         return this.delay;
     }
 }
-

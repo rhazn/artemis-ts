@@ -10,5 +10,5 @@ export interface Class extends Function {}
  * @return {string}
  */
 export function getClassName(klass) {
-  return klass.className || klass.name;
+    return klass.className || klass.name;
 }

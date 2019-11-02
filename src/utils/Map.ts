@@ -1,11 +1,11 @@
-export interface Map<K,V> {
+export interface Map<K, V> {
     clear();
-    containsKey(key):boolean;
-    containsValue(value):boolean;
+    containsKey(key): boolean;
+    containsValue(value): boolean;
     get(key);
-    isEmpty():boolean;
+    isEmpty(): boolean;
     put(key, value);
     remove(key);
-    size():number;
+    size(): number;
     values();
 }

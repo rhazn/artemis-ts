@@ -13,18 +13,18 @@ import {ImmutableBag} from "./../utils/ImmutableBag";
  *
  */
 export class PlayerManager extends Manager {
-    private playerByEntity_:Map<Entity, String>;
-    private entitiesByPlayer_:Map<String, Bag<Entity>>;
+    private playerByEntity_: Map<Entity, string>;
+    private entitiesByPlayer_: Map<string, Bag<Entity>>;
 
     constructor() {
         super();
-        this.playerByEntity_ = new HashMap<Entity, String>();
-        this.entitiesByPlayer_ = new HashMap<String, Bag<Entity>>();
+        this.playerByEntity_ = new HashMap<Entity, string>();
+        this.entitiesByPlayer_ = new HashMap<string, Bag<Entity>>();
     }
 
-    public setPlayer(e:Entity, player:string) {
+    public setPlayer(e: Entity, player: string) {
         this.playerByEntity_.put(e, player);
-        var entities:Bag<Entity> = this.entitiesByPlayer_.get(player);
+        let entities: Bag<Entity> = this.entitiesByPlayer_.get(player);
         if (entities == null) {
             entities = new Bag<Entity>();
             this.entitiesByPlayer_.put(player, entities);
@@ -32,35 +32,31 @@ export class PlayerManager extends Manager {
         entities.add(e);
     }
 
-    public getEntitiesOfPlayer(player:string):ImmutableBag<Entity> {
-        var entities:Bag<Entity> = this.entitiesByPlayer_.get(player);
+    public getEntitiesOfPlayer(player: string): ImmutableBag<Entity> {
+        let entities: Bag<Entity> = this.entitiesByPlayer_.get(player);
         if (entities == null) {
             entities = new Bag<Entity>();
         }
         return entities;
     }
 
-    public removeFromPlayer(e:Entity) {
-        var player:string = this.playerByEntity_.get(e);
+    public removeFromPlayer(e: Entity) {
+        const player: string = this.playerByEntity_.get(e);
         if (player !== null) {
-            var entities:Bag<Entity> = this.entitiesByPlayer_.get(player);
+            const entities: Bag<Entity> = this.entitiesByPlayer_.get(player);
             if (entities !== null) {
                 entities.remove(e);
             }
         }
     }
 
-    public getPlayer(e:Entity) {
+    public getPlayer(e: Entity) {
         return this.playerByEntity_.get(e);
     }
 
+    public initialize() {}
 
-    public initialize() {
-    }
-
-
-    public deleted(e:Entity) {
+    public deleted(e: Entity) {
         this.removeFromPlayer(e);
     }
-
 }

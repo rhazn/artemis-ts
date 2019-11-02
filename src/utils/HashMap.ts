@@ -8,17 +8,17 @@ import {Map} from "./Map";
  */
 function decode(key) {
     switch (typeof key) {
-        case 'boolean':
-            return '' + key;
-        case 'number':
-            return '' + key;
-        case 'string':
-            return '' + key;
-        case 'function':
+        case "boolean":
+            return "" + key;
+        case "number":
+            return "" + key;
+        case "string":
+            return "" + key;
+        case "function":
             return getClassName(key);
         default:
             key.uuid = key.uuid ? key.uuid : UUID.randomUUID();
-            return key.uuid
+            return key.uuid;
     }
 }
 
@@ -27,8 +27,7 @@ function decode(key) {
  *
  * Allow object as key.
  */
-export class HashMap<K,V> implements Map<K,V> {
-
+export class HashMap<K, V> implements Map<K, V> {
     private map_;
     private keys_;
 
@@ -42,20 +41,19 @@ export class HashMap<K,V> implements Map<K,V> {
     }
 
     values() {
-        var result = [];
-        var map = this.map_;
+        const result = [];
+        const map = this.map_;
 
-        for (var key in map) {
+        for (const key in map) {
             result.push(map[key]);
         }
         return result;
     }
 
+    contains(value): boolean {
+        const map = this.map_;
 
-    contains(value):boolean {
-        var map = this.map_;
-
-        for (var key in map) {
+        for (const key in map) {
             if (value === map[key]) {
                 return true;
             }
@@ -63,35 +61,34 @@ export class HashMap<K,V> implements Map<K,V> {
         return false;
     }
 
-    containsKey(key):boolean {
+    containsKey(key): boolean {
         return decode(key) in this.map_;
     }
 
-    containsValue(value):boolean {
-        var map = this.map_;
+    containsValue(value): boolean {
+        const map = this.map_;
 
-        for (var key in map) {
+        for (const key in map) {
             if (value === map[key]) {
                 return true;
             }
         }
         return false;
     }
-
 
     get(key) {
         return this.map_[decode(key)];
     }
 
-    isEmpty():boolean {
+    isEmpty(): boolean {
         return Object.keys(this.map_).length === 0;
     }
 
     keys() {
-        var keys = this.map_;
+        const keys = this.map_;
 
-        var result = [];
-        for (var key in keys) {
+        const result = [];
+        for (const key in keys) {
             result.push(keys[key]);
         }
         return result;
@@ -101,21 +98,21 @@ export class HashMap<K,V> implements Map<K,V> {
      * if key is a string, use as is, else use key.id_ or key.name
      */
     put(key, value) {
-        var k = decode(key);
+        const k = decode(key);
         this.map_[k] = value;
         this.keys_[k] = key;
     }
 
     remove(key) {
-        var map = this.map_;
-        var k = decode(key);
-        var value = map[k];
+        const map = this.map_;
+        const k = decode(key);
+        const value = map[k];
         delete map[k];
         delete this.keys_[k];
         return value;
     }
 
-    size():number {
+    size(): number {
         return Object.keys(this.map_).length;
     }
 }

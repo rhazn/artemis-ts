@@ -3,15 +3,15 @@ import {Bag} from "./../utils/Bag";
 import {Entity} from "./Entity";
 import {BitSet} from "./../utils/BitSet";
 export class EntityManager extends Manager {
-    private entities_:Bag<Entity>;
-    private disabled_:BitSet;
+    private entities_: Bag<Entity>;
+    private disabled_: BitSet;
 
-    private active_:number;
-    private added_:number;
-    private created_:number;
-    private deleted_:number;
+    private active_: number;
+    private added_: number;
+    private created_: number;
+    private deleted_: number;
 
-    private identifierPool_:IdentifierPool;
+    private identifierPool_: IdentifierPool;
 
     constructor() {
         super();
@@ -24,35 +24,29 @@ export class EntityManager extends Manager {
         this.deleted_ = 0;
     }
 
+    public initialize() {}
 
-    public initialize() {
-    }
-
-    public createEntityInstance(name?:string):Entity {
-        var e:Entity = new Entity(this.world_, this.identifierPool_.checkOut(), name);
+    public createEntityInstance(name?: string): Entity {
+        const e: Entity = new Entity(this.world_, this.identifierPool_.checkOut(), name);
         this.created_++;
         return e;
     }
 
-
-    public added(e:Entity) {
+    public added(e: Entity) {
         this.active_++;
         this.added_++;
         this.entities_.set(e.getId(), e);
     }
 
-
-    public enabled(e:Entity) {
+    public enabled(e: Entity) {
         this.disabled_.clear(e.getId());
     }
 
-
-    public disabled(e:Entity) {
+    public disabled(e: Entity) {
         this.disabled_.set(e.getId());
     }
 
-
-    public deleted(e:Entity) {
+    public deleted(e: Entity) {
         this.entities_.set(e.getId(), null);
 
         this.disabled_.clear(e.getId());
@@ -63,7 +57,6 @@ export class EntityManager extends Manager {
         this.deleted_++;
     }
 
-
     /**
      * Check if this entity is active.
      * Active means the entity is being actively processed.
@@ -71,7 +64,7 @@ export class EntityManager extends Manager {
      * @param entityId
      * @return true if active, false if not.
      */
-    public isActive(entityId:number):boolean {
+    public isActive(entityId: number): boolean {
         return this.entities_.get(entityId) != null;
     }
 
@@ -81,7 +74,7 @@ export class EntityManager extends Manager {
      * @param entityId
      * @return true if the entity is enabled, false if it is disabled.
      */
-    public isEnabled(entityId:number):boolean {
+    public isEnabled(entityId: number): boolean {
         return !this.disabled_.get(entityId);
     }
 
@@ -91,7 +84,7 @@ export class EntityManager extends Manager {
      * @param entityId
      * @return the entity
      */
-    public getEntity(entityId:number):Entity {
+    public getEntity(entityId: number): Entity {
         return this.entities_.get(entityId);
     }
 
@@ -99,7 +92,7 @@ export class EntityManager extends Manager {
      * Get how many entities are active in this world.
      * @return how many entities are currently active.
      */
-    public getActiveEntityCount():number {
+    public getActiveEntityCount(): number {
         return this.active_;
     }
 
@@ -109,7 +102,7 @@ export class EntityManager extends Manager {
      * created count is always equal or larger than added count.
      * @return how many entities have been created since start.
      */
-    public getTotalCreated():number {
+    public getTotalCreated(): number {
         return this.created_;
     }
 
@@ -117,7 +110,7 @@ export class EntityManager extends Manager {
      * Get how many entities have been added to the world since start.
      * @return how many entities have been added.
      */
-    public getTotalAdded():number {
+    public getTotalAdded(): number {
         return this.added_;
     }
 
@@ -125,31 +118,29 @@ export class EntityManager extends Manager {
      * Get how many entities have been deleted from the world since start.
      * @return how many entities have been deleted since start.
      */
-    public getTotalDeleted():number {
+    public getTotalDeleted(): number {
         return this.deleted_;
     }
-
-
 }
 /*
  * Used only internally to generate distinct ids for entities and reuse them.
  */
 class IdentifierPool {
-    private ids_:Bag<number>;
-    private nextAvailableId_:number = 0;
+    private ids_: Bag<number>;
+    private nextAvailableId_ = 0;
 
     constructor() {
         this.ids_ = new Bag<number>();
     }
 
-    public checkOut():number {
+    public checkOut(): number {
         if (this.ids_.size() > 0) {
             return this.ids_.removeLast();
         }
         return this.nextAvailableId_++;
     }
 
-    public checkIn(id:number) {
+    public checkIn(id: number) {
         this.ids_.add(id);
     }
 }

@@ -5,11 +5,11 @@ const WORD_MASK = 0xffffffff;
 /**
  * @see http://stackoverflow.com/questions/6506356/java-implementation-of-long-numberoftrailingzeros
  */
-function numberOfTrailingZeros(i:number):number {
+function numberOfTrailingZeros(i: number): number {
     if (i == 0) return 64;
-    var x:number = i;
-    var y:number;
-    var n:number = 63;
+    let x: number = i;
+    let y: number;
+    let n = 63;
     y = x << 32;
     if (y != 0) {
         n -= 32;
@@ -35,51 +35,45 @@ function numberOfTrailingZeros(i:number):number {
         n -= 2;
         x = y;
     }
-    return (n - ((x << 1) >>> 63));
+    return n - ((x << 1) >>> 63);
 }
 
 export class BitSet {
+    private words_: number[];
 
-    private words_:number[];
-
-    constructor(nbits:number = 0) {
+    constructor(nbits = 0) {
         if (nbits < 0) {
-            throw RangeError("Negative Array Size: [" + nbits + ']')
+            throw RangeError("Negative Array Size: [" + nbits + "]");
         } else if (nbits === 0) {
             this.words_ = [];
         } else {
-            var words = this.words_ = new Array(((nbits - 1) >> ADDRESS_BITS_PER_WORD) + 1);
-            for (var i = 0, l = words.length; i < l; i++) {
+            const words = (this.words_ = new Array(((nbits - 1) >> ADDRESS_BITS_PER_WORD) + 1));
+            for (let i = 0, l = words.length; i < l; i++) {
                 words[i] = 0;
             }
         }
     }
 
-    nextSetBit(fromIndex:number) {
+    nextSetBit(fromIndex: number) {
+        let u = fromIndex >> ADDRESS_BITS_PER_WORD;
+        const words = this.words_;
+        const wordsInUse = words.length;
 
-        var u = fromIndex >> ADDRESS_BITS_PER_WORD;
-        var words = this.words_;
-        var wordsInUse = words.length;
-
-        var word = words[u] & (WORD_MASK << fromIndex);
+        let word = words[u] & (WORD_MASK << fromIndex);
         while (true) {
-            if (word !== 0)
-                return (u * BITS_PER_WORD) + numberOfTrailingZeros(word);
-            if (++u === wordsInUse)
-                return -1;
+            if (word !== 0) return u * BITS_PER_WORD + numberOfTrailingZeros(word);
+            if (++u === wordsInUse) return -1;
             word = words[u];
         }
     }
 
-    intersects(set:BitSet):boolean {
-        var words = this.words_;
-        var wordsInUse = words.length;
+    intersects(set: BitSet): boolean {
+        const words = this.words_;
+        const wordsInUse = words.length;
 
-        for (var i = Math.min(wordsInUse, set.words_.length) - 1; i >= 0; i--)
-            if ((words[i] & set.words_[i]) != 0)
-                return true;
+        for (let i = Math.min(wordsInUse, set.words_.length) - 1; i >= 0; i--)
+            if ((words[i] & set.words_[i]) != 0) return true;
         return false;
-
     }
 
     // length():number {
@@ -110,7 +104,7 @@ export class BitSet {
     // clone():BitSet {
 
     // }
-    isEmpty():boolean {
+    isEmpty(): boolean {
         return this.words_.length === 0;
     }
 
@@ -125,23 +119,23 @@ export class BitSet {
 
     // }
 
-    set(bitIndex:number, value:boolean = true):number {
-        var wordIndex = bitIndex >> ADDRESS_BITS_PER_WORD;
-        var words = this.words_;
-        var wordsInUse = words.length;
-        var wordsRequired = wordIndex + 1;
+    set(bitIndex: number, value = true): number {
+        const wordIndex = bitIndex >> ADDRESS_BITS_PER_WORD;
+        const words = this.words_;
+        const wordsInUse = words.length;
+        const wordsRequired = wordIndex + 1;
 
         if (wordsInUse < wordsRequired) {
             words.length = Math.max(2 * wordsInUse, wordsRequired);
-            for (var i = wordsInUse, l = words.length; i < l; i++) {
+            for (let i = wordsInUse, l = words.length; i < l; i++) {
                 words[i] = 0;
             }
         }
 
         if (value) {
-            return words[wordIndex] |= (1 << bitIndex)
+            return (words[wordIndex] |= 1 << bitIndex);
         } else {
-            return words[wordIndex] &= ~(1 << bitIndex);
+            return (words[wordIndex] &= ~(1 << bitIndex));
         }
     }
 
@@ -149,30 +143,29 @@ export class BitSet {
 
     // }
 
-    get(bitIndex:number):boolean {
+    get(bitIndex: number): boolean {
+        const wordIndex = bitIndex >> ADDRESS_BITS_PER_WORD;
+        const words = this.words_;
+        const wordsInUse = words.length;
 
-        var wordIndex = bitIndex >> ADDRESS_BITS_PER_WORD;
-        var words = this.words_;
-        var wordsInUse = words.length;
-
-        return (wordIndex < wordsInUse) && ((words[wordIndex] & (1 << bitIndex)) != 0);
+        return wordIndex < wordsInUse && (words[wordIndex] & (1 << bitIndex)) != 0;
     }
 
     // getRange(from:number, to:number):number {
 
     // }
 
-    clear(bitIndex?:number):number {
+    clear(bitIndex?: number): number {
         if (bitIndex === null) {
-            var words = this.words_;
-            var wordsInUse = words.length;
+            const words = this.words_;
+            let wordsInUse = words.length;
             while (wordsInUse > 0) {
                 words[--wordsInUse] = 0;
             }
             return;
         }
 
-        var wordIndex = bitIndex >> ADDRESS_BITS_PER_WORD;
+        const wordIndex = bitIndex >> ADDRESS_BITS_PER_WORD;
         this.words_[wordIndex] &= ~(1 << bitIndex);
     }
 

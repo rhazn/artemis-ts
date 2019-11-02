@@ -16,18 +16,18 @@ import {Bag} from "./../utils/Bag";
  *
  */
 export class Entity {
-    public uuid:string;
-    public name:string;
+    public uuid: string;
+    public name: string;
 
-    private id_:number;
-    private componentBits_:BitSet;
-    private systemBits_:BitSet;
+    private id_: number;
+    private componentBits_: BitSet;
+    private systemBits_: BitSet;
 
-    private world_:World;
-    private entityManager_:EntityManager;
-    private componentManager_:ComponentManager;
+    private world_: World;
+    private entityManager_: EntityManager;
+    private componentManager_: ComponentManager;
 
-    constructor(world:World, id:number, name?:string) {
+    constructor(world: World, id: number, name?: string) {
         this.world_ = world;
         this.id_ = id;
         this.name = name;
@@ -46,7 +46,7 @@ export class Entity {
      *
      * @return id of the entity.
      */
-    public getId():number {
+    public getId(): number {
         return this.id_;
     }
 
@@ -54,7 +54,7 @@ export class Entity {
      * Returns a BitSet instance containing bits of the components the entity possesses.
      * @return
      */
-    public getComponentBits():BitSet {
+    public getComponentBits(): BitSet {
         return this.componentBits_;
     }
 
@@ -62,7 +62,7 @@ export class Entity {
      * Returns a BitSet instance containing bits of the components the entity possesses.
      * @return
      */
-    public getSystemBits():BitSet {
+    public getSystemBits(): BitSet {
         return this.systemBits_;
     }
 
@@ -76,24 +76,22 @@ export class Entity {
         this.uuid = UUID.randomUUID();
     }
 
-
-    public toString():string {
+    public toString(): string {
         return "Entity[" + this.id_ + "]";
     }
 
-    public createComponent<T extends Component>(componentKlazz, ...args:any[]):T {
-        var componentManager:ComponentManager = this.world_.getComponentManager();
-        var component:T = componentManager.create<T>(this, componentKlazz);
+    public createComponent<T extends Component>(componentKlazz, ...args: any[]): T {
+        const componentManager: ComponentManager = this.world_.getComponentManager();
+        const component: T = componentManager.create<T>(this, componentKlazz);
         if (args.length) {
             (<any>component).initialize(...args);
         }
 
-        var tf:ComponentTypeFactory = this.world_.getComponentManager().typeFactory;
-        var componentType:ComponentType = tf.getTypeFor(componentKlazz);
+        const tf: ComponentTypeFactory = this.world_.getComponentManager().typeFactory;
+        const componentType: ComponentType = tf.getTypeFor(componentKlazz);
         this.componentBits_.set(componentType.getIndex());
 
         return component;
-
     }
 
     /**
@@ -118,17 +116,15 @@ export class Entity {
      * @return this entity for chaining.
      */
     //public addComponent(component:Component, type?:ComponentType):Entity {
-    public addComponent(component:Component|Function, ...args:any[]):Entity {
-
-        var type:ComponentType;
+    public addComponent(component: Component | Function, ...args: any[]): Entity {
+        let type: ComponentType;
         if (component instanceof Component) {
             type = args[0];
         } else {
             component = this.createComponent(component, ...args);
             type = this.getTypeFor(component.constructor);
         }
-        if (type === undefined)
-            type = this.getTypeFor(component.constructor);
+        if (type === undefined) type = this.getTypeFor(component.constructor);
 
         //type = ComponentType.getTypeFor(component.constructor);
         this.componentManager_.addComponent(this, type, <Component>component);
@@ -146,7 +142,7 @@ export class Entity {
      *
      * @return this entity for chaining.
      */
-    public removeComponentInstance(component:Component):Entity {
+    public removeComponentInstance(component: Component): Entity {
         //this.removeComponent(ComponentType.getTypeFor(component.constructor));
         this.removeComponent(this.getTypeFor(component.constructor));
         return this;
@@ -159,7 +155,7 @@ export class Entity {
      *
      * @return this entity for chaining.
      */
-    public removeComponent(type:ComponentType):Entity {
+    public removeComponent(type: ComponentType): Entity {
         this.componentManager_.removeComponent(this, type);
         return this;
     }
@@ -170,7 +166,7 @@ export class Entity {
      *
      * @return this entity for chaining.
      */
-    public removeComponentByType(type:Class):Entity {
+    public removeComponentByType(type: Class): Entity {
         //this.removeComponent(ComponentType.getTypeFor(type));
         this.removeComponent(this.getTypeFor(type));
         return this;
@@ -182,7 +178,7 @@ export class Entity {
      *
      * @return if it's active.
      */
-    public isActive():boolean {
+    public isActive(): boolean {
         return this.entityManager_.isActive(this.id_);
     }
 
@@ -193,7 +189,7 @@ export class Entity {
      *
      * @return if it's enabled
      */
-    public isEnabled():boolean {
+    public isEnabled(): boolean {
         return this.entityManager_.isEnabled(this.id_);
     }
 
@@ -208,7 +204,7 @@ export class Entity {
      *            ComponentType instance for the expected component.
      * @return
      */
-    public getComponent(type:ComponentType):Component {
+    public getComponent(type: ComponentType): Component {
         return this.componentManager_.getComponent(this, type);
     }
 
@@ -227,7 +223,7 @@ export class Entity {
      *            the expected return component type.
      * @return component that matches, or null if none is found.
      */
-    public getComponentByType(type:Class):Component {
+    public getComponentByType(type: Class): Component {
         return this.componentManager_.getComponent(this, this.getTypeFor(type));
         //return this.componentManager_.getComponent(this, ComponentType.getTypeFor(type));
     }
@@ -239,7 +235,7 @@ export class Entity {
      * @param fillBag the bag to put the components into.
      * @return the fillBag with the components in.
      */
-    public getComponents(fillBag:Bag<Component>):Bag<Component> {
+    public getComponents(fillBag: Bag<Component>): Bag<Component> {
         return this.componentManager_.getComponentsFor(this, fillBag);
     }
 
@@ -288,7 +284,7 @@ export class Entity {
      * This UUID is unique per entity (re-used entities get a new UUID).
      * @return uuid instance for this entity.
      */
-    public getUuid():UUID {
+    public getUuid(): UUID {
         return this.uuid;
     }
 
@@ -296,7 +292,7 @@ export class Entity {
      * Returns the world this entity belongs to.
      * @return world of entity.
      */
-    public getWorld():World {
+    public getWorld(): World {
         return this.world_;
     }
 }

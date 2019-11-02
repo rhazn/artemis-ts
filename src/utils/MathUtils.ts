@@ -1,7 +1,6 @@
 export class MathUtils {
-
     public static nextBool() {
-        return ((~~(Math.random() * 32767)) & 1) === 1;
+        return (~~(Math.random() * 32767) & 1) === 1;
     }
 
     /*
@@ -19,7 +18,6 @@ export class MathUtils {
     public static nextInt(max) {
         return ~~(Math.random() * max);
     }
-
 
     public static random(start, end?) {
         if (end === undefined) {
