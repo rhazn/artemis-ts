@@ -1,13 +1,13 @@
 import {EntityObserver} from "./EntityObserver";
 import {World} from "./World";
-import {Bag} from "../utils/Bag";
+import {Bag} from "./../utils/Bag";
 import {Entity} from "./Entity";
 import {Aspect} from "./Aspect";
-import {BitSet} from "../utils/BitSet";
-import {ImmutableBag} from "../utils/ImmutableBag";
-import {HashMap} from "../utils/HashMap";
-import {Class} from "../prolog";
-import {BlackBoard} from "../blackboard/BlackBoard";
+import {BitSet} from "./../utils/BitSet";
+import {ImmutableBag} from "./../utils/ImmutableBag";
+import {HashMap} from "./../utils/HashMap";
+import {Class} from "./../prolog";
+import {BlackBoard} from "./../blackboard/BlackBoard";
 /**
  * The most raw entity system. It should not typically be used, but you can create your own
  * entity system handling by extending this. It is recommended that you use the other provided

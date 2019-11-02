@@ -1,4 +1,4 @@
-import {Bag} from "../utils/Bag";
+import {Bag} from "./../utils/Bag";
 import {PooledComponent} from "./PooledComponent";
 import {ComponentType} from "./ComponentType";
 export class ComponentPool {

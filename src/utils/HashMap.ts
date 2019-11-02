@@ -1,4 +1,4 @@
-import {getClassName} from "../prolog";
+import {getClassName} from "./../prolog";
 import {UUID} from "./UUID";
 import {Map} from "./Map";
 /**

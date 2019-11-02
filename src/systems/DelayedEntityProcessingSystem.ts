@@ -1,7 +1,7 @@
-import {EntitySystem} from "../core/EntitySystem";
-import {Aspect} from "../core/Aspect";
-import {ImmutableBag} from "../utils/ImmutableBag";
-import {Entity} from "../core/Entity";
+import {EntitySystem} from "./../core/EntitySystem";
+import {Aspect} from "./../core/Aspect";
+import {ImmutableBag} from "./../utils/ImmutableBag";
+import {Entity} from "./../core/Entity";
 /**
  * The purpose of this class is to allow systems to execute at varying intervals.
  *

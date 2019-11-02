@@ -1,8 +1,8 @@
-import {Manager} from "../core/Manager";
-import {Bag} from "../utils/Bag";
-import {HashMap} from "../utils/HashMap";
-import {Map} from "../utils/Map";
-import {ImmutableBag} from "../utils/ImmutableBag";
+import {Manager} from "./../core/Manager";
+import {Bag} from "./../utils/Bag";
+import {HashMap} from "./../utils/HashMap";
+import {Map} from "./../utils/Map";
+import {ImmutableBag} from "./../utils/ImmutableBag";
 /**
  * Use this class together with PlayerManager.
  *

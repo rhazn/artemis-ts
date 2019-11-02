@@ -1,7 +1,7 @@
 import {Manager} from "./Manager";
-import {Bag} from "../utils/Bag";
+import {Bag} from "./../utils/Bag";
 import {Entity} from "./Entity";
-import {BitSet} from "../utils/BitSet";
+import {BitSet} from "./../utils/BitSet";
 export class EntityManager extends Manager {
     private entities_:Bag<Entity>;
     private disabled_:BitSet;

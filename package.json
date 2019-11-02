@@ -1,0 +1,30 @@
+{
+  "name": "artemis-ts",
+  "version": "1.0.0",
+  "description": "artemis-ts is a port of the artemis ECS game engine to typescript",
+  "main": "-",
+  "scripts": {
+    "build:compile": "tsc",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rhazn/artemis-ts.git"
+  },
+  "keywords": [
+    "game",
+    "gamedev",
+    "engine",
+    "artemis",
+    "ecs"
+  ],
+  "author": "Philip Heltweg",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rhazn/artemis-ts/issues"
+  },
+  "homepage": "https://github.com/rhazn/artemis-ts#readme",
+  "devDependencies": {
+    "typescript": "3.6.4"
+  }
+}

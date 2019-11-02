@@ -1,7 +1,7 @@
 import {Component} from "./Component";
 import {ComponentType} from "./ComponentType";
-import {Class} from "../prolog";
-import {Bag} from "../utils/Bag";
+import {Class} from "./../prolog";
+import {Bag} from "./../utils/Bag";
 import {World} from "./World";
 import {Entity} from "./Entity";
 /**

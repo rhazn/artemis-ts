@@ -1,7 +1,7 @@
 import {IntervalEntitySystem} from "./IntervalEntitySystem";
-import {Aspect} from "../core/Aspect";
-import {Entity} from "../core/Entity";
-import {ImmutableBag} from "../utils/ImmutableBag";
+import {Aspect} from "./../core/Aspect";
+import {Entity} from "./../core/Entity";
+import {ImmutableBag} from "./../utils/ImmutableBag";
 /**
  * If you need to process entities at a certain interval then use this.
  * A typical usage would be to regenerate ammo or health at certain intervals, no need

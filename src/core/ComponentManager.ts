@@ -1,13 +1,13 @@
 import {Manager} from "./Manager";
-import {Bag} from "../utils/Bag";
+import {Bag} from "./../utils/Bag";
 import {Component} from "./Component";
 import {ComponentPool} from "./ComponentPool";
 import {Entity} from "./Entity";
 import {ComponentTypeFactory} from "./ComponentTypeFactory";
-import {Class} from "../prolog";
+import {Class} from "./../prolog";
 import {ComponentType, Taxonomy} from "./ComponentType";
 import {PooledComponent} from "./PooledComponent";
-import {BitSet} from "../utils/BitSet";
+import {BitSet} from "./../utils/BitSet";
 export class ComponentManager extends Manager {
     private componentsByType_:Bag<Bag<Component>>;
     private pooledComponents_:ComponentPool;

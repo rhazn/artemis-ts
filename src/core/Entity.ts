@@ -1,13 +1,13 @@
-import {BitSet} from "../utils/BitSet";
+import {BitSet} from "./../utils/BitSet";
 import {World} from "./World";
 import {EntityManager} from "./EntityManager";
 import {ComponentManager} from "./ComponentManager";
-import {UUID} from "../utils/UUID";
+import {UUID} from "./../utils/UUID";
 import {Component} from "./Component";
 import {ComponentTypeFactory} from "./ComponentTypeFactory";
 import {ComponentType} from "./ComponentType";
-import {Class} from "../prolog";
-import {Bag} from "../utils/Bag";
+import {Class} from "./../prolog";
+import {Bag} from "./../utils/Bag";
 /**
  * The entity class. Cannot be instantiated outside the framework, you must
  * create new entities using World.

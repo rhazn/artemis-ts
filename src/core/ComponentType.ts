@@ -1,6 +1,6 @@
 import {ComponentManager} from "./ComponentManager";
-import {Class, getClassName} from "../prolog";
-import {Pooled} from "../annotations/Pooled";
+import {Class, getClassName} from "./../prolog";
+import {Pooled} from "./../annotations/Pooled";
 export enum Taxonomy {
     BASIC, POOLED,
 }

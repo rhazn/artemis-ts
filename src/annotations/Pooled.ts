@@ -1,4 +1,4 @@
-import {Class, getClassName} from "../prolog";
+import {Class, getClassName} from "./../prolog";
 /**
  * Mapper artemis.component.Position
  * em:ComponentMapper<artemis.component.Position>;

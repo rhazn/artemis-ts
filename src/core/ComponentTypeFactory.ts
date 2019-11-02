@@ -1,7 +1,7 @@
 import {ComponentType, Taxonomy} from "./ComponentType";
-import {Bag} from "../utils/Bag";
+import {Bag} from "./../utils/Bag";
 import {Aspect} from "./Aspect";
-import {getClassName} from "../prolog";
+import {getClassName} from "./../prolog";
 interface IdentityHashMap {
     [key:string]:ComponentType;
 }

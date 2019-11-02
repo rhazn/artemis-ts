@@ -1,7 +1,7 @@
-import {EntitySystem} from "../core/EntitySystem";
-import {Aspect} from "../core/Aspect";
-import {Entity} from "../core/Entity";
-import {ImmutableBag} from "../utils/ImmutableBag";
+import {EntitySystem} from "./../core/EntitySystem";
+import {Aspect} from "./../core/Aspect";
+import {Entity} from "./../core/Entity";
+import {ImmutableBag} from "./../utils/ImmutableBag";
 /**
  * A typical entity system. Use this when you need to process entities possessing the
  * provided component types.

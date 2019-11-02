@@ -1,7 +1,7 @@
-import {Manager} from "../core/Manager";
-import {Entity} from "../core/Entity";
-import {HashMap} from "../utils/HashMap";
-import {Map} from "../utils/Map";
+import {Manager} from "./../core/Manager";
+import {Entity} from "./../core/Entity";
+import {HashMap} from "./../utils/HashMap";
+import {Map} from "./../utils/Map";
 /**
  * If you need to tag any entity, use this. A typical usage would be to tag
  * entities such as "PLAYER", "BOSS" or something that is very unique.

@@ -1,18 +1,18 @@
 import {IEntityTemplate} from "./IEntityTemplate";
 import {EntityManager} from "./EntityManager";
 import {ComponentManager} from "./ComponentManager";
-import {Bag} from "../utils/Bag";
+import {Bag} from "./../utils/Bag";
 import {Entity} from "./Entity";
-import {Map} from "../utils/Map";
+import {Map} from "./../utils/Map";
 import {Manager} from "./Manager";
 import {EntitySystem} from "./EntitySystem";
-import {HashMap} from "../utils/HashMap";
-import {Class} from "../prolog";
-import {ImmutableBag} from "../utils/ImmutableBag";
+import {HashMap} from "./../utils/HashMap";
+import {Class} from "./../prolog";
+import {ImmutableBag} from "./../utils/ImmutableBag";
 import {EntityObserver} from "./EntityObserver";
 import {Component} from "./Component";
 import {ComponentMapper} from "./ComponentMapper";
-import {EntityTemplate} from "../annotations/EntityTemplate";
+import {EntityTemplate} from "./../annotations/EntityTemplate";
 
 interface IEntityTemplates {
     [key:string]:IEntityTemplate;

@@ -1,9 +1,9 @@
-import {Manager} from "../core/Manager";
-import {Entity} from "../core/Entity";
-import {Bag} from "../utils/Bag";
-import {Map} from "../utils/Map";
-import {HashMap} from "../utils/HashMap";
-import {ImmutableBag} from "../utils/ImmutableBag";
+import {Manager} from "./../core/Manager";
+import {Entity} from "./../core/Entity";
+import {Bag} from "./../utils/Bag";
+import {Map} from "./../utils/Map";
+import {HashMap} from "./../utils/HashMap";
+import {ImmutableBag} from "./../utils/ImmutableBag";
 /**
  * You may sometimes want to specify to which player an entity belongs to.
  *

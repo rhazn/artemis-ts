@@ -1,5 +1,5 @@
-import {EntitySystem} from "../core/EntitySystem";
-import {Aspect} from "../core/Aspect";
+import {EntitySystem} from "./../core/EntitySystem";
+import {Aspect} from "./../core/Aspect";
 /**
  * A system that processes entities at a interval in milliseconds.
  * A typical usage would be a collision system or physics system.

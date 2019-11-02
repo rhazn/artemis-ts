@@ -1,9 +1,9 @@
-import {Manager} from "../core/Manager";
-import {Bag} from "../utils/Bag";
-import {Map} from "../utils/Map";
-import {Entity} from "../core/Entity";
-import {HashMap} from "../utils/HashMap";
-import {ImmutableBag} from "../utils/ImmutableBag";
+import {Manager} from "./../core/Manager";
+import {Bag} from "./../utils/Bag";
+import { Map } from "./../utils/Map";
+import { Entity } from "./../core/Entity";
+import { HashMap } from "./../utils/HashMap";
+import { ImmutableBag } from "./../utils/ImmutableBag";
 /**
  * If you need to group your entities together, e.g. tanks going into "units" group or explosions into "effects",
  * then use this manager. You must retrieve it using world instance.
