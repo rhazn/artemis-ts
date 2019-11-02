@@ -28,7 +28,7 @@
   "author": "Philip Heltweg",
   "license": "MIT",
   "files": [
-      "lib /**/*"
+      "lib/**/*"
     ],
   "bugs": {
     "url": "https://github.com/rhazn/artemis-ts/issues"
