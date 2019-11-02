@@ -1,6 +1,6 @@
 {
   "name": "artemis-ts",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "artemis-ts is a port of the artemis ECS game engine to typescript",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -25,7 +25,7 @@
     "artemis",
     "ecs"
   ],
-  "author": "Philip Heltweg",
+  "author": "Philip Heltweg <pheltweg@gmail.com> (https://rhazn.com/)",
   "license": "MIT",
   "files": [
       "lib/**/*"
