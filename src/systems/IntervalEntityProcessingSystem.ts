@@ -19,9 +19,9 @@ export abstract class IntervalEntityProcessingSystem extends IntervalEntitySyste
      * Process a entity this system is interested in.
      * @param e the entity to process.
      */
-    public abstract processEach(e: Entity);
+    public abstract processEach(e: Entity): void;
 
-    protected processEntities(entities: ImmutableBag<Entity>) {
+    protected processEntities(entities: ImmutableBag<Entity>): void {
         for (let i = 0, s = entities.size(); s > i; i++) {
             this.processEach(entities[i]);
         }

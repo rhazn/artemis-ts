@@ -13,7 +13,7 @@ class Pool {
         return this.cache.size();
     }
 
-    free(component: PooledComponent) {
+    free(component: PooledComponent): void {
         this.cache.add(component);
     }
 }
@@ -30,11 +30,11 @@ export class ComponentPool {
         return (pool.size() > 0 ? pool.obtain() : new componentClass()) as T;
     }
 
-    free(c: PooledComponent, type: ComponentType) {
+    free(c: PooledComponent, type: ComponentType): void {
         this.freeByIndex(c, type.getIndex());
     }
 
-    freeByIndex(c: PooledComponent, typeIndex: number) {
+    freeByIndex(c: PooledComponent, typeIndex: number): void {
         c.reset();
         this.getPool(typeIndex).free(c);
     }

@@ -70,9 +70,9 @@ export abstract class EntitySystem implements EntityObserver {
     /**
      * Called before processing of entities begins.
      */
-    protected abstract begin();
+    protected abstract begin(): void;
 
-    public process() {
+    public process(): void {
         if (this.checkProcessing()) {
             this.begin();
             this.processEntities(this.actives_);
@@ -83,7 +83,7 @@ export abstract class EntitySystem implements EntityObserver {
     /**
      * Called after the processing of entities ends.
      */
-    protected abstract end();
+    protected abstract end(): void;
 
     /**
      * Any implementing entity system must implement this method and the logic
@@ -104,25 +104,25 @@ export abstract class EntitySystem implements EntityObserver {
     /**
      * Override to implement code that gets executed when systems are initialized.
      */
-    public abstract initialize();
+    public abstract initialize(): void;
 
     /**
      * Called if the system has received a entxity it is interested in, e.g. created or a component was added to it.
      * @param e the entity that was added to this system.
      */
-    public abstract inserted(e: Entity);
+    public abstract inserted(e: Entity): void;
 
     /**
      * Called if a entity was removed from this system, e.g. deleted or had one of it's components removed.
      * @param e the entity that was removed from this system.
      */
-    protected abstract removed(e: Entity);
+    protected abstract removed(e: Entity): void;
 
     /**
      * Will check if the entity is of interest to this system.
      * @param e entity to check
      */
-    protected check(e: Entity) {
+    protected check(e: Entity): void {
         if (this.dummy_) {
             return;
         }
@@ -159,43 +159,43 @@ export abstract class EntitySystem implements EntityObserver {
         }
     }
 
-    private removeFromSystem(e: Entity) {
+    private removeFromSystem(e: Entity): void {
         this.actives_.remove(e);
         e.getSystemBits().clear(this.systemIndex_);
         this.removed(e);
     }
 
-    private insertToSystem(e: Entity) {
+    private insertToSystem(e: Entity): void {
         this.actives_.add(e);
         e.getSystemBits().set(this.systemIndex_);
         this.inserted(e);
     }
 
-    public added(e: Entity) {
+    public added(e: Entity): void {
         this.check(e);
     }
 
-    public changed(e: Entity) {
+    public changed(e: Entity): void {
         this.check(e);
     }
 
-    public deleted(e: Entity) {
+    public deleted(e: Entity): void {
         if (e.getSystemBits().get(this.systemIndex_)) {
             this.removeFromSystem(e);
         }
     }
 
-    public disabled(e: Entity) {
+    public disabled(e: Entity): void {
         if (e.getSystemBits().get(this.systemIndex_)) {
             this.removeFromSystem(e);
         }
     }
 
-    public enabled(e: Entity) {
+    public enabled(e: Entity): void {
         this.check(e);
     }
 
-    public setWorld(world: World) {
+    public setWorld(world: World): void {
         this.world = world;
     }
 
@@ -203,7 +203,7 @@ export abstract class EntitySystem implements EntityObserver {
         return this.passive_;
     }
 
-    public setPassive(passive: boolean) {
+    public setPassive(passive: boolean): void {
         this.passive_ = passive;
     }
 

@@ -13,11 +13,11 @@ export abstract class VoidEntitySystem extends EntitySystem {
         super(Aspect.getEmpty());
     }
 
-    protected processEntities() {
+    protected processEntities(): void {
         this.processSystem();
     }
 
-    protected abstract processSystem();
+    protected abstract processSystem(): void;
 
     protected checkProcessing(): boolean {
         return true;

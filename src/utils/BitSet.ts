@@ -54,7 +54,7 @@ export class BitSet {
         }
     }
 
-    nextSetBit(fromIndex: number) {
+    nextSetBit(fromIndex: number): number {
         let u = fromIndex >> ADDRESS_BITS_PER_WORD;
         const words = this.words_;
         const wordsInUse = words.length;
@@ -76,48 +76,9 @@ export class BitSet {
         return false;
     }
 
-    // length():number {
-    // 	return this.length_;
-    // }
-
-    // and(set:BitSet):BitSet {
-
-    // }
-    // or(set:BitSet):BitSet {
-
-    // }
-    // nand(set:BitSet):BitSet {
-
-    // }
-    // nor(set:BitSet):BitSet {
-
-    // }
-    // not(set:BitSet):BitSet {
-
-    // }
-    // xor(set:BitSet):BitSet {
-
-    // }
-    // equals(set:BitSet):boolean {
-
-    // }
-    // clone():BitSet {
-
-    // }
     isEmpty(): boolean {
         return this.words_.length === 0;
     }
-
-    // toString():string {
-
-    // }
-    // cardinality():number {
-
-    // }
-
-    // msb():number {
-
-    // }
 
     set(bitIndex: number, value = true): number {
         const wordIndex = bitIndex >> ADDRESS_BITS_PER_WORD;
@@ -139,10 +100,6 @@ export class BitSet {
         }
     }
 
-    // setRange(from:number, to:number, value:number):number {
-
-    // }
-
     get(bitIndex: number): boolean {
         const wordIndex = bitIndex >> ADDRESS_BITS_PER_WORD;
         const words = this.words_;
@@ -150,10 +107,6 @@ export class BitSet {
 
         return wordIndex < wordsInUse && (words[wordIndex] & (1 << bitIndex)) != 0;
     }
-
-    // getRange(from:number, to:number):number {
-
-    // }
 
     clear(bitIndex?: number): number {
         if (bitIndex === null) {
@@ -168,16 +121,4 @@ export class BitSet {
         const wordIndex = bitIndex >> ADDRESS_BITS_PER_WORD;
         this.words_[wordIndex] &= ~(1 << bitIndex);
     }
-
-    // flip(from?:number, to?:number):number {
-
-    // }
-
-    // nextClearBit(fromIndex:number) {
-
-    // }
-
-    // nextSetBit(fromIndex:number) {
-
-    // }
 }

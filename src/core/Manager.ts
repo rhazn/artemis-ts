@@ -10,7 +10,7 @@ import {Entity} from "./Entity";
 export abstract class Manager implements EntityObserver {
     protected world_: World;
 
-    public setWorld(world: World) {
+    public setWorld(world: World): void {
         this.world_ = world;
     }
 
@@ -18,20 +18,20 @@ export abstract class Manager implements EntityObserver {
         return this.world_;
     }
 
-    public abstract initialize();
+    public abstract initialize(): void;
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public added(e: Entity) {}
+    public added(e: Entity): void {}
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public changed(e: Entity) {}
+    public changed(e: Entity): void {}
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public deleted(e: Entity) {}
+    public deleted(e: Entity): void {}
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public disabled(e: Entity) {}
+    public disabled(e: Entity): void {}
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public enabled(e: Entity) {}
+    public enabled(e: Entity): void {}
 }

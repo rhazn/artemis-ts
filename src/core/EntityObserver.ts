@@ -1,12 +1,13 @@
 import {Entity} from "./Entity";
+
 export interface EntityObserver {
-    added(e: Entity);
+    added(e: Entity): void;
 
-    changed(e: Entity);
+    changed(e: Entity): void;
 
-    deleted(e: Entity);
+    deleted(e: Entity): void;
 
-    enabled(e: Entity);
+    enabled(e: Entity): void;
 
-    disabled(e: Entity);
+    disabled(e: Entity): void;
 }

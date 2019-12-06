@@ -24,7 +24,7 @@ export class ComponentManager extends Manager {
         this.typeFactory = new ComponentTypeFactory();
     }
 
-    public initialize() {}
+    public initialize(): void {}
 
     create<T extends Component>(owner: Entity, componentClass: Class): T {
         const type: ComponentType = this.typeFactory.getTypeFor(componentClass);
@@ -51,7 +51,7 @@ export class ComponentManager extends Manager {
         return component;
     }
 
-    private reclaimPooled(owner: Entity, type: ComponentType) {
+    private reclaimPooled(owner: Entity, type: ComponentType): void {
         const components: Bag<Component> = this.componentsByType_.safeGet(type.getIndex());
         if (components == null) return;
         const old: Component = components.safeGet(owner.getId());
@@ -74,7 +74,7 @@ export class ComponentManager extends Manager {
      * @param e
      *            the entity to remove components from
      */
-    private removeComponentsOfEntity(e: Entity) {
+    private removeComponentsOfEntity(e: Entity): void {
         const componentBits: BitSet = e.getComponentBits();
         for (let i = componentBits.nextSetBit(0); i >= 0; i = componentBits.nextSetBit(i + 1)) {
             switch (this.typeFactory.getTaxonomy(i)) {
@@ -113,7 +113,7 @@ export class ComponentManager extends Manager {
      * @param component
      *            the component to add
      */
-    public addComponent(e: Entity, type: ComponentType, component: Component) {
+    public addComponent(e: Entity, type: ComponentType, component: Component): void {
         this.componentsByType_.ensureCapacity(type.getIndex());
 
         let components: Bag<Component> = this.componentsByType_.get(type.getIndex());
@@ -135,7 +135,7 @@ export class ComponentManager extends Manager {
      * @param type
      *            the type of component being removed
      */
-    public removeComponent(e: Entity, type: ComponentType) {
+    public removeComponent(e: Entity, type: ComponentType): void {
         const index = type.getIndex();
         switch (type.getTaxonomy()) {
             case Taxonomy.BASIC:
@@ -210,11 +210,11 @@ export class ComponentManager extends Manager {
         return fillBag;
     }
 
-    public deleted(e: Entity) {
+    public deleted(e: Entity): void {
         this.deleted_.add(e);
     }
 
-    public clean() {
+    public clean(): void {
         if (this.deleted_.size() > 0) {
             for (let i = 0; this.deleted_.size() > i; i++) {
                 this.removeComponentsOfEntity(this.deleted_.get(i));

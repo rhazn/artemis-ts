@@ -30,7 +30,7 @@ export abstract class Trigger {
     /**
      * Removes the this trigger.
      */
-    public removeThisTrigger() {
+    public removeThisTrigger(): void {
         this.blackboard.removeTrigger(this);
     }
 
@@ -38,7 +38,7 @@ export abstract class Trigger {
      * Fires the specified trigger state.
      * @param triggerStateType
      */
-    public fire(triggerStateType: TriggerStateType) {
+    public fire(triggerStateType: TriggerStateType): void {
         this.isFired = true;
         this.triggerStateType = triggerStateType;
         if (this.checkConditionToFire()) {
@@ -54,7 +54,7 @@ export abstract class Trigger {
      * Called if is fired.
      * @param triggerStateType  State of the trigger.
      */
-    protected abstract calledOnFire(triggerStateType: TriggerStateType);
+    protected abstract calledOnFire(triggerStateType: TriggerStateType): void;
 
     /**
      * Checks the condition to fire.

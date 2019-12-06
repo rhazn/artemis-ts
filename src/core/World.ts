@@ -19,7 +19,7 @@ interface EntityTemplateInterfaces {
 }
 
 class ComponentMapperInitHelper {
-    public static config(target: Record<string, any>, world: World) {
+    public static config(target: Record<string, any>, world: World): void {
         try {
             const clazz: any = target.constructor;
 
@@ -88,7 +88,7 @@ export class World {
     /**
      * Makes sure all managers systems are initialized in the order they were added.
      */
-    public initialize() {
+    public initialize(): void {
         for (let i = 0; i < this.managersBag_.size(); i++) {
             this.managersBag_.get(i).initialize();
         }
@@ -147,14 +147,14 @@ export class World {
      * @return the manager
      */
     public getManager<T extends Manager>(managerType: Class): T {
-        return this.managers_.get(managerType);
+        return this.managers_.get(managerType) as T;
     }
 
     /**
      * Deletes the manager from this world.
      * @param manager to delete.
      */
-    public deleteManager(manager: Manager) {
+    public deleteManager(manager: Manager): void {
         this.managers_.remove(manager);
         this.managersBag_.remove(manager);
     }
@@ -164,7 +164,7 @@ export class World {
      *
      * @return delta time since last game loop.
      */
-    public getDelta() {
+    public getDelta(): number {
         return this.delta;
     }
 
@@ -173,7 +173,7 @@ export class World {
      *
      * @param delta time since last game loop.
      */
-    public setDelta(delta: number) {
+    public setDelta(delta: number): void {
         this.delta = delta;
     }
 
@@ -182,7 +182,7 @@ export class World {
      *
      * @param e entity
      */
-    public addEntity(e: Entity) {
+    public addEntity(e: Entity): void {
         this.added_.add(e);
     }
 
@@ -193,7 +193,7 @@ export class World {
      *
      * @param e entity
      */
-    public changedEntity(e: Entity) {
+    public changedEntity(e: Entity): void {
         this.changed_.add(e);
     }
 
@@ -202,7 +202,7 @@ export class World {
      *
      * @param e entity
      */
-    public deleteEntity(e: Entity) {
+    public deleteEntity(e: Entity): void {
         if (!this.deleted_.contains(e)) {
             this.deleted_.add(e);
         }
@@ -212,7 +212,7 @@ export class World {
      * (Re)enable the entity in the world, after it having being disabled.
      * Won't do anything unless it was already disabled.
      */
-    public enable(e: Entity) {
+    public enable(e: Entity): void {
         this.enable_.add(e);
     }
 
@@ -220,7 +220,7 @@ export class World {
      * Disable the entity from being processed. Won't delete it, it will
      * continue to exist but won't get processed.
      */
-    public disable(e: Entity) {
+    public disable(e: Entity): void {
         this.disable_.add(e);
     }
 
@@ -275,18 +275,18 @@ export class World {
      * Removed the specified system from the world.
      * @param system to be deleted from world.
      */
-    public deleteSystem(system: EntitySystem) {
+    public deleteSystem(system: EntitySystem): void {
         this.systems_.remove(system.constructor);
         this.systemsBag_.remove(system);
     }
 
-    private notifySystems(performer: Performer, e: Entity) {
+    private notifySystems(performer: Performer, e: Entity): void {
         for (let i = 0, s = this.systemsBag_.size(); s > i; i++) {
             performer.perform(this.systemsBag_.get(i), e);
         }
     }
 
-    private notifyManagers(performer: Performer, e: Entity) {
+    private notifyManagers(performer: Performer, e: Entity): void {
         for (let a = 0, s = this.managersBag_.size(); s > a; a++) {
             performer.perform(this.managersBag_.get(a), e);
         }
@@ -307,7 +307,7 @@ export class World {
      * @param entities
      * @param performer
      */
-    private check(entities: Bag<Entity>, performer: Performer) {
+    private check(entities: Bag<Entity>, performer: Performer): void {
         if (!entities.isEmpty()) {
             for (let i = 0, s = entities.size(); s > i; i++) {
                 const e: Entity = entities.get(i);
@@ -321,7 +321,7 @@ export class World {
     /**
      * Process all non-passive systems.
      */
-    public process() {
+    public process(): void {
         this.check(this.added_, {
             perform: function(observer: EntityObserver, e: Entity) {
                 observer.added(e);
@@ -378,7 +378,7 @@ export class World {
      * @param entityTag
      * @param entityTemplate
      */
-    public setEntityTemplate(entityTag: string, entityTemplate: EntityTemplateInterface) {
+    public setEntityTemplate(entityTag: string, entityTemplate: EntityTemplateInterface): void {
         this.entityTemplates[entityTag] = entityTemplate;
     }
 
@@ -399,5 +399,5 @@ export class World {
  * Only used internally to maintain clean code.
  */
 interface Performer {
-    perform(observer: EntityObserver, e: Entity);
+    perform(observer: EntityObserver, e: Entity): void;
 }

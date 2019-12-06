@@ -22,7 +22,7 @@ export class PlayerManager extends Manager {
         this.entitiesByPlayer_ = new HashMap<string, Bag<Entity>>();
     }
 
-    public setPlayer(e: Entity, player: string) {
+    public setPlayer(e: Entity, player: string): void {
         this.playerByEntity_.put(e, player);
         let entities: Bag<Entity> = this.entitiesByPlayer_.get(player);
         if (entities == null) {
@@ -40,7 +40,7 @@ export class PlayerManager extends Manager {
         return entities;
     }
 
-    public removeFromPlayer(e: Entity) {
+    public removeFromPlayer(e: Entity): void {
         const player: string = this.playerByEntity_.get(e);
         if (player !== null) {
             const entities: Bag<Entity> = this.entitiesByPlayer_.get(player);
@@ -50,13 +50,13 @@ export class PlayerManager extends Manager {
         }
     }
 
-    public getPlayer(e: Entity) {
+    public getPlayer(e: Entity): string {
         return this.playerByEntity_.get(e);
     }
 
-    public initialize() {}
+    public initialize(): void {}
 
-    public deleted(e: Entity) {
+    public deleted(e: Entity): void {
         this.removeFromPlayer(e);
     }
 }

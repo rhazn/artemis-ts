@@ -27,7 +27,7 @@ export class TrigLUT {
     private static sin_: number[];
     private static cos_: number[];
 
-    static init(update: boolean) {
+    static init(update: boolean): void {
         TrigLUT.RAD = Math.PI / 180.0;
         TrigLUT.DEG = 180.0 / Math.PI;
 

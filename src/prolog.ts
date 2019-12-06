@@ -9,6 +9,6 @@ export interface Class extends Function {}
  * @param {Function} klass
  * @return {string}
  */
-export function getClassName(klass) {
+export function getClassName(klass): string {
     return klass.className || klass.name;
 }

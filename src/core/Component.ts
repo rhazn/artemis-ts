@@ -4,5 +4,5 @@
  * @author Arni Arent
  */
 export abstract class Component {
-    public abstract initialize(...args: any[]);
+    public abstract initialize(...args: any[]): void;
 }

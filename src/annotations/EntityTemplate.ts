@@ -4,7 +4,7 @@ import {Class} from "./../prolog";
  *
  */
 export function EntityTemplate(component: string) {
-    return function(target: Class) {
+    return function(target: Class): void {
         EntityTemplate["entityTemplates"] = EntityTemplate["entityTemplates"] || {};
 
         EntityTemplate["entityTemplates"][component] = target;

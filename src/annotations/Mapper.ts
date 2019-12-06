@@ -5,7 +5,7 @@ import {Class} from "./../prolog";
  *
  */
 export function Mapper(component: Class) {
-    return function(target: Record<string, any>, propertyKey?: string) {
+    return function(target: Record<string, any>, propertyKey?: string): void {
         const klass: any = target.constructor;
 
         klass.declaredFields = klass.declaredFields || [];

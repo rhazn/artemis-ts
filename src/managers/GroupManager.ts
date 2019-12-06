@@ -23,11 +23,11 @@ export class GroupManager extends Manager {
         this.groupsByEntity_ = new HashMap<Entity, Bag<string>>();
     }
 
-    public initialize() {}
-    public added() {}
-    public changed() {}
-    public disabled() {}
-    public enabled() {}
+    public initialize(): void {}
+    public added(): void {}
+    public changed(): void {}
+    public disabled(): void {}
+    public enabled(): void {}
 
     /**
      * Set the group of the entity.
@@ -35,7 +35,7 @@ export class GroupManager extends Manager {
      * @param group group to add the entity into.
      * @param e entity to add into the group.
      */
-    public add(e: Entity, group: string) {
+    public add(e: Entity, group: string): void {
         let entities: Bag<Entity> = this.entitiesByGroup_.get(group);
         if (entities == null) {
             entities = new Bag<Entity>();
@@ -56,7 +56,7 @@ export class GroupManager extends Manager {
      * @param e
      * @param group
      */
-    public remove(e: Entity, group: string) {
+    public remove(e: Entity, group: string): void {
         const entities: Bag<Entity> = this.entitiesByGroup_.get(group);
         if (entities != null) {
             entities.remove(e);
@@ -68,7 +68,7 @@ export class GroupManager extends Manager {
         }
     }
 
-    public removeFromAllGroups(e: Entity) {
+    public removeFromAllGroups(e: Entity): void {
         const groups: Bag<string> = this.groupsByEntity_.get(e);
         if (groups != null) {
             for (let i = 0, s = groups.size(); s > i; i++) {
@@ -131,7 +131,7 @@ export class GroupManager extends Manager {
         return false;
     }
 
-    public deleted(e: Entity) {
+    public deleted(e: Entity): void {
         this.removeFromAllGroups(e);
     }
 }

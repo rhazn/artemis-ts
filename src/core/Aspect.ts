@@ -44,7 +44,7 @@ export class Aspect {
      *
      * @param {artemis.World} world
      */
-    public setWorld(world: World) {
+    public setWorld(world: World): void {
         this.world_ = world;
     }
 
@@ -60,7 +60,7 @@ export class Aspect {
         return this.oneSet_;
     }
 
-    private getIndexFor(c) {
+    private getIndexFor(c): number {
         return Aspect.typeFactory.getIndexFor(c);
     }
 

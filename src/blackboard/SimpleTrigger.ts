@@ -1,6 +1,7 @@
 import {Trigger} from "./Trigger";
 import {BlackBoard} from "./BlackBoard";
 import {TriggerStateType} from "./TriggerStateType";
+
 export class SimpleTrigger extends Trigger {
     /** The condition. */
     private condition: (b: BlackBoard, t: TriggerStateType) => boolean;
@@ -29,7 +30,7 @@ export class SimpleTrigger extends Trigger {
      * Called if is fired.
      * @param triggerStateType  State of the trigger.
      */
-    protected calledOnFire(triggerStateType: TriggerStateType) {
+    protected calledOnFire(triggerStateType: TriggerStateType): void {
         if (this.onFire !== null) {
             this.onFire(triggerStateType);
         }

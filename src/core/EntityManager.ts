@@ -21,7 +21,7 @@ class IdentifierPool {
         return this.nextAvailableId_++;
     }
 
-    public checkIn(id: number) {
+    public checkIn(id: number): void {
         this.ids_.add(id);
     }
 }
@@ -48,7 +48,7 @@ export class EntityManager extends Manager {
         this.deleted_ = 0;
     }
 
-    public initialize() {}
+    public initialize(): void {}
 
     public createEntityInstance(name?: string): Entity {
         const e: Entity = new Entity(this.world_, this.identifierPool_.checkOut(), name);
@@ -56,21 +56,21 @@ export class EntityManager extends Manager {
         return e;
     }
 
-    public added(e: Entity) {
+    public added(e: Entity): void {
         this.active_++;
         this.added_++;
         this.entities_.set(e.getId(), e);
     }
 
-    public enabled(e: Entity) {
+    public enabled(e: Entity): void {
         this.disabled_.clear(e.getId());
     }
 
-    public disabled(e: Entity) {
+    public disabled(e: Entity): void {
         this.disabled_.set(e.getId());
     }
 
-    public deleted(e: Entity) {
+    public deleted(e: Entity): void {
         this.entities_.set(e.getId(), null);
 
         this.disabled_.clear(e.getId());
