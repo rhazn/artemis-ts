@@ -84,7 +84,7 @@ export class Entity {
         const componentManager: ComponentManager = this.world_.getComponentManager();
         const component: T = componentManager.create<T>(this, componentKlazz);
         if (args.length) {
-            (<any>component).initialize(...args);
+            (component as any).initialize(...args);
         }
 
         const tf: ComponentTypeFactory = this.world_.getComponentManager().typeFactory;
@@ -115,7 +115,6 @@ export class Entity {
      *
      * @return this entity for chaining.
      */
-    //public addComponent(component:Component, type?:ComponentType):Entity {
     public addComponent(component: Component | Function, ...args: any[]): Entity {
         let type: ComponentType;
         if (component instanceof Component) {
@@ -126,8 +125,7 @@ export class Entity {
         }
         if (type === undefined) type = this.getTypeFor(component.constructor);
 
-        //type = ComponentType.getTypeFor(component.constructor);
-        this.componentManager_.addComponent(this, type, <Component>component);
+        this.componentManager_.addComponent(this, type, component as Component);
         return this;
     }
 

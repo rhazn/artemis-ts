@@ -3,6 +3,6 @@
  *
  * @author Arni Arent
  */
-export class Component {
-    public initialize(...args: any[]) {}
+export abstract class Component {
+    public abstract initialize(...args: any[]);
 }

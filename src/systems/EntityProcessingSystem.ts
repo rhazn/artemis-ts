@@ -9,7 +9,7 @@ import {ImmutableBag} from "./../utils/ImmutableBag";
  * @author Arni Arent
  *
  */
-export class EntityProcessingSystem extends EntitySystem {
+export abstract class EntityProcessingSystem extends EntitySystem {
     constructor(aspect: Aspect) {
         super(aspect);
     }
@@ -18,7 +18,7 @@ export class EntityProcessingSystem extends EntitySystem {
      * Process a entity this system is interested in.
      * @param e the entity to process.
      */
-    protected processEach(e: Entity) {}
+    protected abstract processEach(e: Entity);
 
     protected processEntities(entities: ImmutableBag<Entity>) {
         for (let i = 0, s = entities.size(); s > i; i++) {

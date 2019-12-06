@@ -2,6 +2,30 @@ import {Manager} from "./Manager";
 import {Bag} from "./../utils/Bag";
 import {Entity} from "./Entity";
 import {BitSet} from "./../utils/BitSet";
+
+/*
+ * Used only internally to generate distinct ids for entities and reuse them.
+ */
+class IdentifierPool {
+    private ids_: Bag<number>;
+    private nextAvailableId_ = 0;
+
+    constructor() {
+        this.ids_ = new Bag<number>();
+    }
+
+    public checkOut(): number {
+        if (this.ids_.size() > 0) {
+            return this.ids_.removeLast();
+        }
+        return this.nextAvailableId_++;
+    }
+
+    public checkIn(id: number) {
+        this.ids_.add(id);
+    }
+}
+
 export class EntityManager extends Manager {
     private entities_: Bag<Entity>;
     private disabled_: BitSet;
@@ -120,27 +144,5 @@ export class EntityManager extends Manager {
      */
     public getTotalDeleted(): number {
         return this.deleted_;
-    }
-}
-/*
- * Used only internally to generate distinct ids for entities and reuse them.
- */
-class IdentifierPool {
-    private ids_: Bag<number>;
-    private nextAvailableId_ = 0;
-
-    constructor() {
-        this.ids_ = new Bag<number>();
-    }
-
-    public checkOut(): number {
-        if (this.ids_.size() > 0) {
-            return this.ids_.removeLast();
-        }
-        return this.nextAvailableId_++;
-    }
-
-    public checkIn(id: number) {
-        this.ids_.add(id);
     }
 }

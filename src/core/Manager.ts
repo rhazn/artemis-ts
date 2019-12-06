@@ -7,10 +7,10 @@ import {Entity} from "./Entity";
  * @author Arni Arent
  *
  */
-export class Manager implements EntityObserver {
+export abstract class Manager implements EntityObserver {
     protected world_: World;
 
-    public initialize() {}
+    public abstract initialize();
 
     public setWorld(world: World) {
         this.world_ = world;
@@ -20,13 +20,13 @@ export class Manager implements EntityObserver {
         return this.world_;
     }
 
-    public added(e: Entity) {}
+    public abstract added(e: Entity);
 
-    public changed(e: Entity) {}
+    public abstract changed(e: Entity);
 
-    public deleted(e: Entity) {}
+    public abstract deleted(e: Entity);
 
-    public disabled(e: Entity) {}
+    public abstract disabled(e: Entity);
 
-    public enabled(e: Entity) {}
+    public abstract enabled(e: Entity);
 }

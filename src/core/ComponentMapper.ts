@@ -33,7 +33,7 @@ export class ComponentMapper<A extends Component> {
      * @return the instance of the component
      */
     public get(e: Entity): A {
-        return <A>this.components_.get(e.getId());
+        return this.components_.get(e.getId()) as A;
     }
 
     /**
@@ -45,7 +45,7 @@ export class ComponentMapper<A extends Component> {
      */
     public getSafe(e: Entity): A {
         if (this.components_.isIndexWithinBounds(e.getId())) {
-            return <A>this.components_.get(e.getId());
+            return this.components_.get(e.getId()) as A;
         }
         return null;
     }

@@ -1,4 +1,4 @@
-import {IEntityTemplate} from "./IEntityTemplate";
+import {EntityTemplateInterface} from "./EntityTemplateInterface";
 import {EntityManager} from "./EntityManager";
 import {ComponentManager} from "./ComponentManager";
 import {Bag} from "./../utils/Bag";
@@ -14,8 +14,26 @@ import {Component} from "./Component";
 import {ComponentMapper} from "./ComponentMapper";
 import {EntityTemplate} from "./../annotations/EntityTemplate";
 
-interface IEntityTemplates {
-    [key: string]: IEntityTemplate;
+interface EntityTemplateInterfaces {
+    [key: string]: EntityTemplateInterface;
+}
+
+class ComponentMapperInitHelper {
+    public static config(target: Record<string, any>, world: World) {
+        try {
+            const clazz: any = target.constructor;
+
+            for (const fieldIndex in clazz.declaredFields) {
+                const field = clazz.declaredFields[fieldIndex];
+                if (!target.hasOwnProperty(field)) {
+                    const componentType = clazz.prototype[field];
+                    target[field] = world.getMapper(componentType);
+                }
+            }
+        } catch (e) {
+            throw new Error("Error while setting component mappers");
+        }
+    }
 }
 
 /**
@@ -45,7 +63,7 @@ export class World {
     private systems_: Map<Function, EntitySystem>;
     private systemsBag_: Bag<EntitySystem>;
 
-    private entityTemplates: IEntityTemplates;
+    private entityTemplates: EntityTemplateInterfaces;
 
     constructor() {
         this.managers_ = new HashMap<Function, Manager>();
@@ -71,7 +89,7 @@ export class World {
      * Makes sure all managers systems are initialized in the order they were added.
      */
     public initialize() {
-        for (var i = 0; i < this.managersBag_.size(); i++) {
+        for (let i = 0; i < this.managersBag_.size(); i++) {
             this.managersBag_.get(i).initialize();
         }
 
@@ -81,7 +99,7 @@ export class World {
             this.setEntityTemplate(component, new Template());
         }
 
-        for (var i = 0; i < this.systemsBag_.size(); i++) {
+        for (let i = 0; i < this.systemsBag_.size(); i++) {
             /** Inject the component mappers into each system */
             ComponentMapperInitHelper.config(this.systemsBag_.get(i), this);
             this.systemsBag_.get(i).initialize();
@@ -372,7 +390,7 @@ export class World {
      * @param entityTag
      * @param entityTemplate
      */
-    public setEntityTemplate(entityTag: string, entityTemplate: IEntityTemplate) {
+    public setEntityTemplate(entityTag: string, entityTemplate: EntityTemplateInterface) {
         this.entityTemplates[entityTag] = entityTemplate;
     }
 
@@ -394,22 +412,4 @@ export class World {
  */
 interface Performer {
     perform(observer: EntityObserver, e: Entity);
-}
-
-class ComponentMapperInitHelper {
-    public static config(target: Record<string, any>, world: World) {
-        try {
-            const clazz: any = target.constructor;
-
-            for (const fieldIndex in clazz.declaredFields) {
-                const field = clazz.declaredFields[fieldIndex];
-                if (!target.hasOwnProperty(field)) {
-                    const componentType = clazz.prototype[field];
-                    target[field] = world.getMapper(componentType);
-                }
-            }
-        } catch (e) {
-            throw new Error("Error while setting component mappers");
-        }
-    }
 }

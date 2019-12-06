@@ -1,12 +1,12 @@
 import {Bag} from "./Bag";
-export interface ISignal<T> {
+export interface SignalInterface<T> {
     dispatch(...args: any[]): void;
     add(listener: T): void;
     clear(): void;
     remove(listener: T): void;
 }
 
-export class Signal<T> implements ISignal<T> {
+export class Signal<T> implements SignalInterface<T> {
     public _listeners: Bag<T>;
     private _context;
     private _alloc: number;

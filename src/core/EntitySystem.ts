@@ -8,6 +8,25 @@ import {ImmutableBag} from "./../utils/ImmutableBag";
 import {HashMap} from "./../utils/HashMap";
 import {Class} from "./../prolog";
 import {BlackBoard} from "./../blackboard/BlackBoard";
+
+/**
+ * Used to generate a unique bit for each system.
+ * Only used internally in EntitySystem.
+ */
+export class SystemIndexManager {
+    public static INDEX = 0;
+    private static indices: HashMap<Function, number> = new HashMap<Function, number>();
+
+    public static getIndexFor(es: Class): number {
+        let index: number = SystemIndexManager.indices.get(es);
+        if (index === undefined) {
+            index = SystemIndexManager.INDEX++;
+            SystemIndexManager.indices.put(es, index);
+        }
+        return index;
+    }
+}
+
 /**
  * The most raw entity system. It should not typically be used, but you can create your own
  * entity system handling by extending this. It is recommended that you use the other provided
@@ -16,7 +35,7 @@ import {BlackBoard} from "./../blackboard/BlackBoard";
  * @author Arni Arent
  *
  */
-export class EntitySystem implements EntityObserver {
+export abstract class EntitySystem implements EntityObserver {
     public static blackBoard: BlackBoard = new BlackBoard();
     private systemIndex_: number;
 
@@ -51,7 +70,7 @@ export class EntitySystem implements EntityObserver {
     /**
      * Called before processing of entities begins.
      */
-    protected begin() {}
+    protected abstract begin();
 
     public process() {
         if (this.checkProcessing()) {
@@ -64,7 +83,7 @@ export class EntitySystem implements EntityObserver {
     /**
      * Called after the processing of entities ends.
      */
-    protected end() {}
+    protected abstract end();
 
     /**
      * Any implementing entity system must implement this method and the logic
@@ -72,7 +91,7 @@ export class EntitySystem implements EntityObserver {
      *
      * @param entities the entities this system contains.
      */
-    protected processEntities(entities: ImmutableBag<Entity>) {}
+    protected abstract processEntities(entities: ImmutableBag<Entity>);
 
     /**
      *
@@ -85,19 +104,19 @@ export class EntitySystem implements EntityObserver {
     /**
      * Override to implement code that gets executed when systems are initialized.
      */
-    public initialize() {}
+    public abstract initialize();
 
     /**
      * Called if the system has received a entxity it is interested in, e.g. created or a component was added to it.
      * @param e the entity that was added to this system.
      */
-    public inserted(e: Entity) {}
+    public abstract inserted(e: Entity);
 
     /**
      * Called if a entity was removed from this system, e.g. deleted or had one of it's components removed.
      * @param e the entity that was removed from this system.
      */
-    protected removed(e: Entity) {}
+    protected abstract removed(e: Entity);
 
     /**
      * Will check if the entity is of interest to this system.
@@ -190,22 +209,5 @@ export class EntitySystem implements EntityObserver {
 
     public getActive(): ImmutableBag<Entity> {
         return this.actives_;
-    }
-}
-/**
- * Used to generate a unique bit for each system.
- * Only used internally in EntitySystem.
- */
-export class SystemIndexManager {
-    public static INDEX = 0;
-    private static indices: HashMap<Function, number> = new HashMap<Function, number>();
-
-    public static getIndexFor(es: Class): number {
-        let index: number = SystemIndexManager.indices.get(es);
-        if (index === undefined) {
-            index = SystemIndexManager.INDEX++;
-            SystemIndexManager.indices.put(es, index);
-        }
-        return index;
     }
 }

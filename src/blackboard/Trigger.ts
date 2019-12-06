@@ -1,6 +1,7 @@
 import {BlackBoard} from "./BlackBoard";
 import {TriggerStateType} from "./TriggerStateType";
-export class Trigger {
+
+export abstract class Trigger {
     /** Occurs when [on fire]. */
     //private onFire:(t:Trigger)=>void;
     protected onFire: any;
@@ -53,7 +54,7 @@ export class Trigger {
      * Called if is fired.
      * @param triggerStateType  State of the trigger.
      */
-    protected calledOnFire(triggerStateType: TriggerStateType) {}
+    protected abstract calledOnFire(triggerStateType: TriggerStateType);
 
     /**
      * Checks the condition to fire.

@@ -24,6 +24,10 @@ export class GroupManager extends Manager {
     }
 
     public initialize() {}
+    public added() {}
+    public changed() {}
+    public disabled() {}
+    public enabled() {}
 
     /**
      * Set the group of the entity.

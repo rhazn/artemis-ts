@@ -27,7 +27,7 @@ import {Entity} from "./../core/Entity";
  * @author Arni Arent
  *
  */
-export class DelayedEntityProcessingSystem extends EntitySystem {
+export abstract class DelayedEntityProcessingSystem extends EntitySystem {
     private delay_: number;
     private running_: boolean;
     private acc_: number;
@@ -63,9 +63,7 @@ export class DelayedEntityProcessingSystem extends EntitySystem {
      * @param e entity
      * @return delay
      */
-    protected getRemainingDelay(e: Entity): number {
-        throw Error("Abstract Method");
-    }
+    protected abstract getRemainingDelay(e: Entity): number;
 
     protected checkProcessing(): boolean {
         if (this.running_) {
@@ -86,9 +84,9 @@ export class DelayedEntityProcessingSystem extends EntitySystem {
      * @param e the entity to process.
      * @param accumulatedDelta the delta time since this system was last executed.
      */
-    protected processDelta(e: Entity, accumulatedDelta: number) {}
+    protected abstract processDelta(e: Entity, accumulatedDelta: number);
 
-    protected processExpired(e: Entity) {}
+    protected abstract processExpired(e: Entity);
 
     /**
      * Start processing of entities after a certain amount of delta time.
