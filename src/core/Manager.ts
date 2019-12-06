@@ -10,8 +10,6 @@ import {Entity} from "./Entity";
 export abstract class Manager implements EntityObserver {
     protected world_: World;
 
-    public abstract initialize();
-
     public setWorld(world: World) {
         this.world_ = world;
     }
@@ -20,13 +18,20 @@ export abstract class Manager implements EntityObserver {
         return this.world_;
     }
 
-    public abstract added(e: Entity);
+    public abstract initialize();
 
-    public abstract changed(e: Entity);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    public added(e: Entity) {}
 
-    public abstract deleted(e: Entity);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    public changed(e: Entity) {}
 
-    public abstract disabled(e: Entity);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    public deleted(e: Entity) {}
 
-    public abstract enabled(e: Entity);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    public disabled(e: Entity) {}
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    public enabled(e: Entity) {}
 }
