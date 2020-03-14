@@ -1,10 +1,10 @@
 import {Trigger} from "./Trigger";
 import {TriggerStateType} from "./TriggerStateType";
-interface IHashMap {
+interface HashMap {
     [key: string]: any;
 }
 
-interface ITriggerList {
+interface TriggerList {
     [key: string]: Array<Trigger>;
 }
 
@@ -13,10 +13,10 @@ interface ITriggerList {
  */
 export class BlackBoard {
     /** the intelligence. */
-    private intelligence: IHashMap;
+    private intelligence: HashMap;
 
     /** the triggers. */
-    private triggers: ITriggerList;
+    private triggers: TriggerList;
 
     /**
      * Initializes a new instance of the BlackBoard class
@@ -32,7 +32,7 @@ export class BlackBoard {
      * @param trigger   The trigger.
      * @param evaluateNow if set to true [evaluate now].
      */
-    public addTrigger(trigger: Trigger, evaluateNow = false) {
+    public addTrigger(trigger: Trigger, evaluateNow = false): void {
         trigger.blackboard = this;
         for (const i in trigger.worldPropertiesMonitored) {
             const intelName: string = trigger.worldPropertiesMonitored[i];
@@ -55,7 +55,7 @@ export class BlackBoard {
      * Atomics the operate on entry.
      * @param operation The operation.
      */
-    public atomicOperateOnEntry(operation: Function) {
+    public atomicOperateOnEntry(operation: Function): void {
         operation(this);
     }
 
@@ -73,7 +73,7 @@ export class BlackBoard {
      * Removes the entry.
      * @param name  The name.
      */
-    removeEntry(name: string) {
+    removeEntry(name: string): void {
         if (this.intelligence[name]) {
             delete this.intelligence[name];
             if (this.triggers[name]) {
@@ -91,7 +91,7 @@ export class BlackBoard {
      * Removes the trigger.
      * @param trigger The trigger.
      */
-    removeTrigger(trigger: Trigger) {
+    removeTrigger(trigger: Trigger): void {
         for (const i in trigger.worldPropertiesMonitored) {
             const intelName = trigger.worldPropertiesMonitored[i];
             const t = this.triggers[intelName].indexOf(trigger);
@@ -106,7 +106,7 @@ export class BlackBoard {
      * @param name  The name.
      * @param intel The intel.
      */
-    setEntry<T>(name: string, intel: T) {
+    setEntry<T>(name: string, intel: T): void {
         const triggerStateType: TriggerStateType = this.intelligence[name]
             ? TriggerStateType.ValueChanged
             : TriggerStateType.ValueAdded;

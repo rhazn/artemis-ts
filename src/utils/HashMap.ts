@@ -6,7 +6,7 @@ import {Map} from "./Map";
  *
  * When the key is an object, we generate a unique uuid and use that as the actual key.
  */
-function decode(key) {
+function decode(key): string {
     switch (typeof key) {
         case "boolean":
             return "" + key;
@@ -35,12 +35,12 @@ export class HashMap<K, V> implements Map<K, V> {
         this.clear();
     }
 
-    clear() {
+    clear(): void {
         this.map_ = {};
         this.keys_ = {};
     }
 
-    values() {
+    values(): V[] {
         const result = [];
         const map = this.map_;
 
@@ -76,7 +76,7 @@ export class HashMap<K, V> implements Map<K, V> {
         return false;
     }
 
-    get(key) {
+    get(key: K): V {
         return this.map_[decode(key)];
     }
 
@@ -84,7 +84,7 @@ export class HashMap<K, V> implements Map<K, V> {
         return Object.keys(this.map_).length === 0;
     }
 
-    keys() {
+    keys(): K[] {
         const keys = this.map_;
 
         const result = [];
@@ -97,13 +97,13 @@ export class HashMap<K, V> implements Map<K, V> {
     /**
      * if key is a string, use as is, else use key.id_ or key.name
      */
-    put(key, value) {
+    put(key, value): void {
         const k = decode(key);
         this.map_[k] = value;
         this.keys_[k] = key;
     }
 
-    remove(key) {
+    remove(key): V {
         const map = this.map_;
         const k = decode(key);
         const value = map[k];

@@ -8,6 +8,7 @@ import {Class} from "./../prolog";
 import {ComponentType, Taxonomy} from "./ComponentType";
 import {PooledComponent} from "./PooledComponent";
 import {BitSet} from "./../utils/BitSet";
+
 export class ComponentManager extends Manager {
     private componentsByType_: Bag<Bag<Component>>;
     private pooledComponents_: ComponentPool;
@@ -23,7 +24,7 @@ export class ComponentManager extends Manager {
         this.typeFactory = new ComponentTypeFactory();
     }
 
-    public initialize() {}
+    public initialize(): void {}
 
     create<T extends Component>(owner: Entity, componentClass: Class): T {
         const type: ComponentType = this.typeFactory.getTypeFor(componentClass);
@@ -31,17 +32,15 @@ export class ComponentManager extends Manager {
 
         switch (type.getTaxonomy()) {
             case Taxonomy.BASIC:
-                //console.log('create BASIC');
-                component = <T>this.newInstance(componentClass, false);
+                component = this.newInstance(componentClass, false) as T;
                 break;
             case Taxonomy.POOLED:
-                //console.log('create POOLED');
                 this.reclaimPooled(owner, type);
                 /**
                  * YUK! <T> is not working here.
                  * It should be ok, since it will be the same as 'type'
                  */
-                component = <any>this.pooledComponents_.obtain(componentClass, type);
+                component = this.pooledComponents_.obtain(componentClass, type) as any;
                 break;
             default:
                 throw new Error(
@@ -52,20 +51,20 @@ export class ComponentManager extends Manager {
         return component;
     }
 
-    private reclaimPooled(owner: Entity, type: ComponentType) {
+    private reclaimPooled(owner: Entity, type: ComponentType): void {
         const components: Bag<Component> = this.componentsByType_.safeGet(type.getIndex());
         if (components == null) return;
         const old: Component = components.safeGet(owner.getId());
         if (old !== undefined && old !== null) {
-            this.pooledComponents_.free(<PooledComponent>old, type);
+            this.pooledComponents_.free(old as PooledComponent, type);
         }
     }
 
     newInstance<T extends Component>(constructor, constructorHasWorldParameter: boolean): T {
         if (constructorHasWorldParameter) {
-            return <T>new constructor(this.world_);
+            return new constructor(this.world_) as T;
         } else {
-            return <T>new constructor();
+            return new constructor() as T;
         }
     }
 
@@ -75,19 +74,17 @@ export class ComponentManager extends Manager {
      * @param e
      *            the entity to remove components from
      */
-    private removeComponentsOfEntity(e: Entity) {
+    private removeComponentsOfEntity(e: Entity): void {
         const componentBits: BitSet = e.getComponentBits();
         for (let i = componentBits.nextSetBit(0); i >= 0; i = componentBits.nextSetBit(i + 1)) {
             switch (this.typeFactory.getTaxonomy(i)) {
                 case Taxonomy.BASIC:
-                    //console.log('remove BASIC');
                     this.componentsByType_.get(i).set(e.getId(), null);
                     break;
 
                 case Taxonomy.POOLED:
-                    //console.log('remove POOLED');
-                    var pooled: Component = this.componentsByType_.get(i).get(e.getId());
-                    this.pooledComponents_.freeByIndex(<PooledComponent>pooled, i);
+                    const pooled: Component = this.componentsByType_.get(i).get(e.getId());
+                    this.pooledComponents_.freeByIndex(pooled as PooledComponent, i);
                     this.componentsByType_.get(i).set(e.getId(), null);
                     break;
 
@@ -116,7 +113,7 @@ export class ComponentManager extends Manager {
      * @param component
      *            the component to add
      */
-    public addComponent(e: Entity, type: ComponentType, component: Component) {
+    public addComponent(e: Entity, type: ComponentType, component: Component): void {
         this.componentsByType_.ensureCapacity(type.getIndex());
 
         let components: Bag<Component> = this.componentsByType_.get(type.getIndex());
@@ -138,7 +135,7 @@ export class ComponentManager extends Manager {
      * @param type
      *            the type of component being removed
      */
-    public removeComponent(e: Entity, type: ComponentType) {
+    public removeComponent(e: Entity, type: ComponentType): void {
         const index = type.getIndex();
         switch (type.getTaxonomy()) {
             case Taxonomy.BASIC:
@@ -146,9 +143,9 @@ export class ComponentManager extends Manager {
                 e.getComponentBits().clear(type.getIndex());
                 break;
             case Taxonomy.POOLED:
-                var pooled: Component = this.componentsByType_[index][e.getId()];
+                const pooled: Component = this.componentsByType_[index][e.getId()];
                 e.getComponentBits().clear(type.getIndex());
-                this.pooledComponents_.free(<PooledComponent>pooled, type);
+                this.pooledComponents_.free(pooled as PooledComponent, type);
                 this.componentsByType_.get(index).set(e.getId(), null);
                 break;
             default:
@@ -213,11 +210,11 @@ export class ComponentManager extends Manager {
         return fillBag;
     }
 
-    public deleted(e: Entity) {
+    public deleted(e: Entity): void {
         this.deleted_.add(e);
     }
 
-    public clean() {
+    public clean(): void {
         if (this.deleted_.size() > 0) {
             for (let i = 0; this.deleted_.size() > i; i++) {
                 this.removeComponentsOfEntity(this.deleted_.get(i));

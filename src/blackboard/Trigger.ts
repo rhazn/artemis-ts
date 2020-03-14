@@ -1,6 +1,7 @@
 import {BlackBoard} from "./BlackBoard";
 import {TriggerStateType} from "./TriggerStateType";
-export class Trigger {
+
+export abstract class Trigger {
     /** Occurs when [on fire]. */
     //private onFire:(t:Trigger)=>void;
     protected onFire: any;
@@ -29,7 +30,7 @@ export class Trigger {
     /**
      * Removes the this trigger.
      */
-    public removeThisTrigger() {
+    public removeThisTrigger(): void {
         this.blackboard.removeTrigger(this);
     }
 
@@ -37,7 +38,7 @@ export class Trigger {
      * Fires the specified trigger state.
      * @param triggerStateType
      */
-    public fire(triggerStateType: TriggerStateType) {
+    public fire(triggerStateType: TriggerStateType): void {
         this.isFired = true;
         this.triggerStateType = triggerStateType;
         if (this.checkConditionToFire()) {
@@ -53,7 +54,7 @@ export class Trigger {
      * Called if is fired.
      * @param triggerStateType  State of the trigger.
      */
-    protected calledOnFire(triggerStateType: TriggerStateType) {}
+    protected abstract calledOnFire(triggerStateType: TriggerStateType): void;
 
     /**
      * Checks the condition to fire.

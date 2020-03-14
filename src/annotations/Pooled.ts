@@ -5,7 +5,7 @@ import {Class, getClassName} from "./../prolog";
  *
  */
 export function Pooled() {
-    return function(klass: Class, propertyKey?: string, descriptor?: TypedPropertyDescriptor<any>) {
+    return function(klass: Class): void {
         Pooled["pooledComponents"] = Pooled["pooledComponents"] || {};
         Pooled["pooledComponents"][getClassName(klass)] = klass;
     };

@@ -19,12 +19,12 @@ export class TagManager extends Manager {
         this.tagsByEntity_ = new HashMap<Entity, string>();
     }
 
-    public register(tag: string, e: Entity) {
+    public register(tag: string, e: Entity): void {
         this.entitiesByTag_.put(tag, e);
         this.tagsByEntity_.put(e, tag);
     }
 
-    public unregister(tag: string) {
+    public unregister(tag: string): void {
         this.tagsByEntity_.remove(this.entitiesByTag_.remove(tag));
     }
 
@@ -40,12 +40,12 @@ export class TagManager extends Manager {
         return this.tagsByEntity_.values();
     }
 
-    public deleted(e: Entity) {
+    public deleted(e: Entity): void {
         const removedTag: string = this.tagsByEntity_.remove(e);
         if (removedTag != null) {
             this.entitiesByTag_.remove(removedTag);
         }
     }
 
-    public initialize() {}
+    public initialize(): void {}
 }

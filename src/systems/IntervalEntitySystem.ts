@@ -7,7 +7,7 @@ import {Aspect} from "./../core/Aspect";
  * @author Arni Arent
  *
  */
-export class IntervalEntitySystem extends EntitySystem {
+export abstract class IntervalEntitySystem extends EntitySystem {
     private acc_ = 0;
     private interval_ = 0;
 
@@ -17,9 +17,6 @@ export class IntervalEntitySystem extends EntitySystem {
     }
 
     protected checkProcessing(): boolean {
-        //this.acc_ += this.world.getDelta();
-        //if(this.acc_ >= this.interval_) {
-
         if ((this.acc_ += this.world.getDelta()) >= this.interval_) {
             this.acc_ -= this.interval_;
             return true;

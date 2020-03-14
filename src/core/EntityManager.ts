@@ -2,6 +2,30 @@ import {Manager} from "./Manager";
 import {Bag} from "./../utils/Bag";
 import {Entity} from "./Entity";
 import {BitSet} from "./../utils/BitSet";
+
+/*
+ * Used only internally to generate distinct ids for entities and reuse them.
+ */
+class IdentifierPool {
+    private ids_: Bag<number>;
+    private nextAvailableId_ = 0;
+
+    constructor() {
+        this.ids_ = new Bag<number>();
+    }
+
+    public checkOut(): number {
+        if (this.ids_.size() > 0) {
+            return this.ids_.removeLast();
+        }
+        return this.nextAvailableId_++;
+    }
+
+    public checkIn(id: number): void {
+        this.ids_.add(id);
+    }
+}
+
 export class EntityManager extends Manager {
     private entities_: Bag<Entity>;
     private disabled_: BitSet;
@@ -24,7 +48,7 @@ export class EntityManager extends Manager {
         this.deleted_ = 0;
     }
 
-    public initialize() {}
+    public initialize(): void {}
 
     public createEntityInstance(name?: string): Entity {
         const e: Entity = new Entity(this.world_, this.identifierPool_.checkOut(), name);
@@ -32,21 +56,21 @@ export class EntityManager extends Manager {
         return e;
     }
 
-    public added(e: Entity) {
+    public added(e: Entity): void {
         this.active_++;
         this.added_++;
         this.entities_.set(e.getId(), e);
     }
 
-    public enabled(e: Entity) {
+    public enabled(e: Entity): void {
         this.disabled_.clear(e.getId());
     }
 
-    public disabled(e: Entity) {
+    public disabled(e: Entity): void {
         this.disabled_.set(e.getId());
     }
 
-    public deleted(e: Entity) {
+    public deleted(e: Entity): void {
         this.entities_.set(e.getId(), null);
 
         this.disabled_.clear(e.getId());
@@ -120,27 +144,5 @@ export class EntityManager extends Manager {
      */
     public getTotalDeleted(): number {
         return this.deleted_;
-    }
-}
-/*
- * Used only internally to generate distinct ids for entities and reuse them.
- */
-class IdentifierPool {
-    private ids_: Bag<number>;
-    private nextAvailableId_ = 0;
-
-    constructor() {
-        this.ids_ = new Bag<number>();
-    }
-
-    public checkOut(): number {
-        if (this.ids_.size() > 0) {
-            return this.ids_.removeLast();
-        }
-        return this.nextAvailableId_++;
-    }
-
-    public checkIn(id: number) {
-        this.ids_.add(id);
     }
 }

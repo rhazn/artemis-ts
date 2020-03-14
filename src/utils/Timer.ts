@@ -11,7 +11,7 @@ export class Timer {
         this.acc = 0;
     }
 
-    public update(delta: number) {
+    public update(delta: number): void {
         if (!this.done && !this.stopped) {
             this.acc += delta;
 
@@ -29,7 +29,7 @@ export class Timer {
         }
     }
 
-    public reset() {
+    public reset(): void {
         this.stopped = false;
         this.done = false;
         this.acc = 0;
@@ -43,15 +43,15 @@ export class Timer {
         return !this.done && this.acc < this.delay && !this.stopped;
     }
 
-    public stop() {
+    public stop(): void {
         this.stopped = true;
     }
 
-    public setDelay(delay: number) {
+    public setDelay(delay: number): void {
         this.delay = delay;
     }
 
-    public execute = () => {};
+    public execute = (): void => {};
 
     public getPercentageRemaining(): number {
         if (this.done) return 100;

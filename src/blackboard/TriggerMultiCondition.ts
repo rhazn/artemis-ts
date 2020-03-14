@@ -1,6 +1,7 @@
 import {TriggerStateType} from "./TriggerStateType";
 import {BlackBoard} from "./BlackBoard";
 import {Trigger} from "./Trigger";
+
 export class TriggerMultiCondition extends Trigger {
     /** The condition. */
     private condition: (b: BlackBoard, t: TriggerStateType) => boolean;
@@ -28,7 +29,7 @@ export class TriggerMultiCondition extends Trigger {
     /**
      * Removes the this trigger.
      */
-    public removeThisTrigger() {
+    public removeThisTrigger(): void {
         this.blackboard.removeTrigger(this);
     }
 
@@ -36,7 +37,7 @@ export class TriggerMultiCondition extends Trigger {
      * Called if is fired.
      * @param triggerStateType  State of the trigger.
      */
-    protected calledOnFire(triggerStateType: TriggerStateType) {
+    protected calledOnFire(triggerStateType: TriggerStateType): void {
         if (this.onFire !== null) {
             this.onFire(triggerStateType);
         }

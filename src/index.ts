@@ -22,7 +22,7 @@ export * from "./core/Entity";
 export * from "./core/EntityManager";
 export * from "./core/EntityObserver";
 export * from "./core/EntitySystem";
-export * from "./core/IEntityTemplate";
+export * from "./core/EntityTemplateInterface";
 export * from "./core/Manager";
 export * from "./core/PooledComponent";
 export * from "./core/World";

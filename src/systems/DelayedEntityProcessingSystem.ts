@@ -27,7 +27,7 @@ import {Entity} from "./../core/Entity";
  * @author Arni Arent
  *
  */
-export class DelayedEntityProcessingSystem extends EntitySystem {
+export abstract class DelayedEntityProcessingSystem extends EntitySystem {
     private delay_: number;
     private running_: boolean;
     private acc_: number;
@@ -36,7 +36,7 @@ export class DelayedEntityProcessingSystem extends EntitySystem {
         super(aspect);
     }
 
-    protected processEntities(entities: ImmutableBag<Entity>) {
+    protected processEntities(entities: ImmutableBag<Entity>): void {
         for (let i = 0, s = entities.size(); s > i; i++) {
             const entity: Entity = entities.get(i);
             this.processDelta(entity, this.acc_);
@@ -50,7 +50,7 @@ export class DelayedEntityProcessingSystem extends EntitySystem {
         this.stop();
     }
 
-    public inserted(e: Entity) {
+    public inserted(e: Entity): void {
         const delay: number = this.getRemainingDelay(e);
         if (delay > 0) {
             this.offerDelay(delay);
@@ -63,15 +63,10 @@ export class DelayedEntityProcessingSystem extends EntitySystem {
      * @param e entity
      * @return delay
      */
-    protected getRemainingDelay(e: Entity): number {
-        throw Error("Abstract Method");
-    }
+    protected abstract getRemainingDelay(e: Entity): number;
 
     protected checkProcessing(): boolean {
         if (this.running_) {
-            //this.acc_ += this.world.getDelta();
-
-            //if(this.acc_ >= this.delay_) {
             if ((this.acc_ += this.world.getDelta()) >= this.delay_) {
                 return true;
             }
@@ -86,9 +81,9 @@ export class DelayedEntityProcessingSystem extends EntitySystem {
      * @param e the entity to process.
      * @param accumulatedDelta the delta time since this system was last executed.
      */
-    protected processDelta(e: Entity, accumulatedDelta: number) {}
+    protected abstract processDelta(e: Entity, accumulatedDelta: number): void;
 
-    protected processExpired(e: Entity) {}
+    protected abstract processExpired(e: Entity): void;
 
     /**
      * Start processing of entities after a certain amount of delta time.
@@ -97,7 +92,7 @@ export class DelayedEntityProcessingSystem extends EntitySystem {
      *
      * @param delta time delay until processing starts.
      */
-    public restart(delay: number) {
+    public restart(delay: number): void {
         this.delay_ = delay;
         this.acc_ = 0;
         this.running_ = true;
@@ -117,7 +112,7 @@ export class DelayedEntityProcessingSystem extends EntitySystem {
      *
      * @param delay
      */
-    public offerDelay(delay: number) {
+    public offerDelay(delay: number): void {
         if (!this.running_ || delay < this.getRemainingTimeUntilProcessing()) {
             this.restart(delay);
         }
@@ -159,7 +154,7 @@ export class DelayedEntityProcessingSystem extends EntitySystem {
      * Stops the system from running, aborts current countdown.
      * Call offerDelay or restart to run it again.
      */
-    public stop() {
+    public stop(): void {
         this.running_ = false;
         this.acc_ = 0;
     }

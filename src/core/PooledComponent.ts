@@ -5,5 +5,6 @@ import {Component} from "./Component";
  * Expects no <code>final</code> fields.
  */
 export class PooledComponent extends Component {
-    public reset() {}
+    public initialize(): void {}
+    public reset(): void {}
 }

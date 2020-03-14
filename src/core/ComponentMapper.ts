@@ -18,7 +18,6 @@ export class ComponentMapper<A extends Component> {
     private components_: Bag<Component>;
 
     constructor(type: Class, world: World) {
-        //this.type_ = ComponentType.getTypeFor(type);
         this.type_ = world.getComponentManager().typeFactory.getTypeFor(type);
         this.components_ = world.getComponentManager().getComponentsByType(this.type_);
         this.classType_ = type;
@@ -33,7 +32,7 @@ export class ComponentMapper<A extends Component> {
      * @return the instance of the component
      */
     public get(e: Entity): A {
-        return <A>this.components_.get(e.getId());
+        return this.components_.get(e.getId()) as A;
     }
 
     /**
@@ -45,7 +44,7 @@ export class ComponentMapper<A extends Component> {
      */
     public getSafe(e: Entity): A {
         if (this.components_.isIndexWithinBounds(e.getId())) {
-            return <A>this.components_.get(e.getId());
+            return this.components_.get(e.getId()) as A;
         }
         return null;
     }
@@ -69,8 +68,4 @@ export class ComponentMapper<A extends Component> {
     public static getFor<T extends Component>(type: Function, world: World): ComponentMapper<T> {
         return new ComponentMapper<T>(type, world);
     }
-
-    // public static <T extends Component> ComponentMapper<T> getFor(Class<T> type, World world) {
-    // 	return new ComponentMapper<T>(type, world);
-    // }
 }

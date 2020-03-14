@@ -10,7 +10,7 @@ import {ImmutableBag} from "./../utils/ImmutableBag";
  * @author Arni Arent
  *
  */
-export class IntervalEntityProcessingSystem extends IntervalEntitySystem {
+export abstract class IntervalEntityProcessingSystem extends IntervalEntitySystem {
     constructor(aspect: Aspect, interval: number) {
         super(aspect, interval);
     }
@@ -19,9 +19,9 @@ export class IntervalEntityProcessingSystem extends IntervalEntitySystem {
      * Process a entity this system is interested in.
      * @param e the entity to process.
      */
-    public processEach(e: Entity) {}
+    public abstract processEach(e: Entity): void;
 
-    protected processEntities(entities: ImmutableBag<Entity>) {
+    protected processEntities(entities: ImmutableBag<Entity>): void {
         for (let i = 0, s = entities.size(); s > i; i++) {
             this.processEach(entities[i]);
         }

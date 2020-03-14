@@ -24,13 +24,13 @@ export class TeamManager extends Manager {
         this.teamByPlayer_ = new HashMap<string, string>();
     }
 
-    public initialize() {}
+    public initialize(): void {}
 
     public getTeam(player: string): string {
         return this.teamByPlayer_.get(player);
     }
 
-    public setTeam(player: string, team: string) {
+    public setTeam(player: string, team: string): void {
         this.removeFromTeam(player);
 
         this.teamByPlayer_.put(player, team);
@@ -47,7 +47,7 @@ export class TeamManager extends Manager {
         return this.playersByTeam_.get(team);
     }
 
-    public removeFromTeam(player: string) {
+    public removeFromTeam(player: string): void {
         const team: string = this.teamByPlayer_.remove(player);
         if (team != null) {
             const players: Bag<string> = this.playersByTeam_.get(team);

@@ -206,7 +206,7 @@ export class Bag<E> implements ImmutableBag<E> {
      * @param e
      *            element to be added to this list
      */
-    add(e: E) {
+    add(e: E): void {
         // is size greater than capacity increase capacity
         if (this.size_ === this.length) {
             this.grow();
@@ -221,7 +221,7 @@ export class Bag<E> implements ImmutableBag<E> {
      * @param index position of element
      * @param e the element
      */
-    set(index: number, e: E) {
+    set(index: number, e: E): void {
         if (index >= this.length) {
             this.grow(index * 2);
         }
@@ -229,11 +229,11 @@ export class Bag<E> implements ImmutableBag<E> {
         this.array[index] = e;
     }
 
-    grow(newCapacity: number = ~~((this.length * 3) / 2) + 1) {
+    grow(newCapacity: number = ~~((this.length * 3) / 2) + 1): void {
         this.length = ~~newCapacity;
     }
 
-    ensureCapacity(index: number) {
+    ensureCapacity(index: number): void {
         if (index >= this.length) {
             this.grow(index * 2);
         }
@@ -243,7 +243,7 @@ export class Bag<E> implements ImmutableBag<E> {
      * Removes all of the elements from this bag. The bag will be empty after
      * this call returns.
      */
-    clear() {
+    clear(): void {
         let i: number;
         let size: number;
         // null all elements so gc can clean up
@@ -258,7 +258,7 @@ export class Bag<E> implements ImmutableBag<E> {
      * Add all items into this bag.
      * @param items
      */
-    addAll(items: ImmutableBag<E>) {
+    addAll(items: ImmutableBag<E>): void {
         let i: number;
 
         for (i = 0; items.size() > i; i++) {

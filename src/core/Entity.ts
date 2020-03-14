@@ -70,7 +70,7 @@ export class Entity {
      * Make entity ready for re-use.
      * Will generate a new uuid for the entity.
      */
-    protected reset() {
+    protected reset(): void {
         this.systemBits_.clear();
         this.componentBits_.clear();
         this.uuid = UUID.randomUUID();
@@ -84,7 +84,7 @@ export class Entity {
         const componentManager: ComponentManager = this.world_.getComponentManager();
         const component: T = componentManager.create<T>(this, componentKlazz);
         if (args.length) {
-            (<any>component).initialize(...args);
+            (component as any).initialize(...args);
         }
 
         const tf: ComponentTypeFactory = this.world_.getComponentManager().typeFactory;
@@ -95,18 +95,6 @@ export class Entity {
     }
 
     /**
-     * Add a component to this entity.
-     *
-     * @param component to add to this entity
-     *
-     * @return this entity for chaining.
-     */
-    // public addComponent(component: Component):Entity {
-    // 	this.addComponent(component, ComponentType.getTypeFor(component.getClass()));
-    // 	return this;
-    // }
-
-    /**
      * Faster adding of components into the entity. Not neccessery to use this, but
      * in some cases you might need the extra performance.
      *
@@ -115,7 +103,6 @@ export class Entity {
      *
      * @return this entity for chaining.
      */
-    //public addComponent(component:Component, type?:ComponentType):Entity {
     public addComponent(component: Component | Function, ...args: any[]): Entity {
         let type: ComponentType;
         if (component instanceof Component) {
@@ -126,12 +113,11 @@ export class Entity {
         }
         if (type === undefined) type = this.getTypeFor(component.constructor);
 
-        //type = ComponentType.getTypeFor(component.constructor);
-        this.componentManager_.addComponent(this, type, <Component>component);
+        this.componentManager_.addComponent(this, type, component as Component);
         return this;
     }
 
-    private getTypeFor(c) {
+    private getTypeFor(c): ComponentType {
         return this.world_.getComponentManager().typeFactory.getTypeFor(c);
     }
 
@@ -143,7 +129,6 @@ export class Entity {
      * @return this entity for chaining.
      */
     public removeComponentInstance(component: Component): Entity {
-        //this.removeComponent(ComponentType.getTypeFor(component.constructor));
         this.removeComponent(this.getTypeFor(component.constructor));
         return this;
     }
@@ -245,21 +230,21 @@ export class Entity {
      * relevant systems. It is typical to call this after adding components to a
      * newly created entity.
      */
-    public addToWorld() {
+    public addToWorld(): void {
         this.world_.addEntity(this);
     }
 
     /**
      * This entity has changed, a component added or deleted.
      */
-    public changedInWorld() {
+    public changedInWorld(): void {
         this.world_.changedEntity(this);
     }
 
     /**
      * Delete this entity from the world.
      */
-    public deleteFromWorld() {
+    public deleteFromWorld(): void {
         this.world_.deleteEntity(this);
     }
 
@@ -267,7 +252,7 @@ export class Entity {
      * (Re)enable the entity in the world, after it having being disabled.
      * Won't do anything unless it was already disabled.
      */
-    public enable() {
+    public enable(): void {
         this.world_.enable(this);
     }
 
@@ -275,7 +260,7 @@ export class Entity {
      * Disable the entity from being processed. Won't delete it, it will
      * continue to exist but won't get processed.
      */
-    public disable() {
+    public disable(): void {
         this.world_.disable(this);
     }
 
